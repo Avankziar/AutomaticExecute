@@ -10,10 +10,10 @@ Build 2
 - Einmal im Jahr und Zeitlisten mäßig an diesem tag.
 
 Build 1
-- /autoex | Infobefehl
-- /autoex spigotreload | Lädt alle yamldatein neu.
-- /autoex item <Pfad> | Lädt das Item in der Hand in die Mysql hoch.
-- /autoex item <pfad> delete | Löscht das item aus der Datenbank.
-- /autoex book <pfad> | Öffnet das Buch aus der Datenbank.
-- /autoex send <pfad> | Sendet ungeachtet der Zeit, die Automessage sofort nach den sonstigen Gegebenheiten.
-- /autoexb bungeereload | Lädt alle yamldatein auf dem bungee neu.  
+- +/autoex | Infobefehl
+- +/autoex spigotreload | Lädt alle yamldatein neu.
+- +/autoex item <Pfad> | Lädt das Item in der Hand in die Mysql hoch.
+- +/autoex item <pfad> delete | Löscht das item aus der Datenbank.
+- +/autoex book <pfad> | Öffnet das Buch aus der Datenbank.
+- +/autoex send <pfad> | Sendet ungeachtet der Zeit, die Automessage sofort nach den sonstigen Gegebenheiten.
+- +/autoexb bungeereload | Lädt alle yamldatein auf dem bungee neu.  
