@@ -16,4 +16,4 @@ Build 1
 - /autoex item <pfad> delete | Löscht das item aus der Datenbank.
 - /autoex book <pfad> | Öffnet das Buch aus der Datenbank.
 - /autoex send <pfad> | Sendet ungeachtet der Zeit, die Automessage sofort nach den sonstigen Gegebenheiten.
-- /autoexb bungeereload | Lädt alle yamldatein auf dem bungee neu. 
+- /autoexb bungeereload | Lädt alle yamldatein auf dem bungee neu.  
