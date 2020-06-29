@@ -1,0 +1,100 @@
+#MessageOne:
+#  Rythmus: '' #ONCE only once, ONCE_A_DAY multiple but once a day, MULTIPLE_ON_THE_DAY INTERVAL in intervals, ON_TIMES for Times on all days
+#  SendingDate: '' #Only by ONCE to use dd.MM.yyyy
+#  SendingTime: '' #HH:mm:ss
+#  SendingTimes:  #~HH:mm:ss Attention! ~-Symbol muss before written!
+#  - ~11:20:00
+#  - ~13:20:00
+#  Permission: '' #can be deleted for no perm
+#  Sounds: #Only bukkit/Spigot
+#  - UI_CARTOGRAPHY_TABLE_TAKE_RESULT
+#  SoundsWithPermission: #Only bukkit/Spigot
+#  - UI_CARTOGRAPHY_TABLE_TAKE_RESULT
+#  ConsoleCommand:
+#  - help
+#  - restart
+#  DoPlayerCommandWithPermission: false #is this true, it do PlayerCommand with Permission, if false it do it without.
+#  PlayerCommand:
+#  - test <player>
+#  TitleMessage: 'Title~SubTitle~FadeIn(aka Number)~Stay(aka Number)~FadeOut(aka Number)'
+#  TitleMessageWithPermission: 'Title~SubTitle~FadeIn(aka Number)~Stay(aka Number)~FadeOut(aka Number)'
+#  IsRandom: false #if Random, than a random message from a Path in this file showing
+#  RandomMessage:
+#  - MessageOne.MessagePath1
+#  - MessageOne.MessagePath2
+#  Message:
+#  - Line 1
+#  - §cLine 2 but in red
+#  MessagePath1:
+#  - Test
+#  MessagePath2:
+#  - Test 2
+MessageTwo:
+  Rythmus: 'ONCE'
+  SendingDate: '28.03.2021'
+  SendingTime: '13:00:00' #hh:mm:ss
+  IsRandom: false 
+  Message:
+  - §6Message ONCE at 28.03.2021 13:00:00
+  - §6Happy Birthsday Avankziar
+  - §f§oClapping+§f§oClapping+§f§oClapping~<click@SUGGEST_COMMAND@/clapping~<hover@SHOW_TEXT@MessageTwo.Hovers.One
+  Hovers:
+    One: '§f§oClapping'
+MessageThree:
+  Rythmus: 'ONCE_A_DAY'
+  SendingTime: '19:10:00'
+  IsRandom: false
+  Message:
+  - §6Message ONCE_A_DAY at 11:15:00
+  - §4Tea Time
+  - §eDrink like a British Gentel(wo)man
+MessageFour:
+  Rythmus: 'MULTIPLE_ON_THE_DAY'
+  SendingDate: '23.06.2020'
+  SendingTime: '00:15:00' #HH:mm:ss
+  IsRandom: false
+  Message:
+  - §6Messsage MULTIPLE_ON_THE_DAY every 15 min
+  - §cDing Dong!
+  - §cDong Ding!
+  - §eAnother hour pass by!
+MessageFive:
+  Rythmus: 'INTERVAL'
+  SendingTime: '00:15:00' #HH:mm:ss
+  IsRandom: false
+  Message:
+  - §6Message INTERVAL every 15 min
+  - Line 1 by 15 min
+  - §cLine 2 but in red by 15 min
+MessageSix:
+  Rythmus: 'INTERVAL'
+  SendingTime: '00:05:00' #HH:mm:ss
+  IsRandom: true
+  Message:
+  - §6Message INTERVAL every 5 min
+  - Line 1 by 5 min
+  - §cLine 2 but in red by 5 min
+  RandomMessage:
+  - MessageSix.RMOne
+  - MessageSix.RMTwo
+  RMOne:
+  - §cRandom Message One
+  - §cUhhhhh
+  RMTwo:
+  - §cRandom Message Two
+  - §aAAAA
+MessageSeven:
+  Rythmus: 'ON_TIMES'
+  Permission: 'scc.channels.global'
+  SendingTimes:
+  - ~16:00:00
+  - ~16:10:00
+  - ~16:15:00
+  DoPlayerCommandWithPermission: true
+  ConsoleCommand:
+  - help
+  PlayerCommand:
+  - afkr time
+  - money
+  TitleMessageWithPermission: '&eCmd ausgeführt(Perm)~Ist das nicht toll~100~100~50'
+  TitleMessage: '&eCmd ausgeführt~&cIst das nicht toll~100~100~50'

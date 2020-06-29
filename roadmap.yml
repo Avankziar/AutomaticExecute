@@ -1,0 +1,19 @@
+Build 2
+- Ändern der pfade, sodass für die Verschiedenen funktionen, bspw. ONCE ein pfad in der yml existeriert der Once heißt und 
+  dort alle Info zu den Zeiten drin sind. aka dd.MM.YYYY HH:mm:ss etc. Bei Mehrfach anzeigen spilten in Datum und 
+  zeitliste etc.
+- Mehrfach am einem Tag, in zwei Funktionen Spliten. Einmal für Mehrfach_An_Einem_Tag_Interval und Mehrfach_An_Einem_Tag_Zeitlisten oder so.
+- Einmal in der Woche als neue Funktion hinzufügen.
+- Einmal im Monat hinzufügen. (Muss ich mir noch überlegen wie^^)
+- Einmal im Jahr hinzufügen.
+- Einmal im Jahr und Interval mäßig an diesem tag.
+- Einmal im Jahr und Zeitlisten mäßig an diesem tag.
+
+Build 1
+- /autoex | Infobefehl
+- /autoex spigotreload | Lädt alle yamldatein neu.
+- /autoex item <Pfad> | Lädt das Item in der Hand in die Mysql hoch.
+- /autoex item <pfad> delete | Löscht das item aus der Datenbank.
+- /autoex book <pfad> | Öffnet das Buch aus der Datenbank.
+- /autoex send <pfad> | Sendet ungeachtet der Zeit, die Automessage sofort nach den sonstigen Gegebenheiten.
+- /autoexb bungeereload | Lädt alle yamldatein auf dem bungee neu.

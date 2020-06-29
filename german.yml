@@ -1,0 +1,29 @@
+InputIsWrong: '&cDeine Eingabe ist fehlerhaft! Klicke hier auf den Text, um weitere Infos zu bekommen!'
+NoPermission: '&cDu hast dafür keine Rechte!'
+NoPlayerExist: '&cDer Spieler ist nicht online oder existiert nicht!'
+NoNumber: '&cDas Argument &f%arg% &cmuss eine ganze Zahl sein.'
+CmdAutoE:
+  Info:
+    Headline: '&e==========&7[&6AutomaticExecute&7]&e=========='
+    reload: '&c/autoex(b) reload &f| Lädt auf vom Plugin die Yaml-Dateien und die Mysql neu.'
+    book: '&c/autoex book <bookpath> &f| Öffnet das Buch aus der Mysql.'
+    item: '&c/autoex item &f| Speicher oder löscht das Item in die Datenbank.'
+    send: '&c/autoex send <messagepath> &f| Sendet die Automessage sofort, außer der Zeit, allen Angaben entsprechend.'
+    NotExist: '&cDie AutoMessage existiert nicht!'
+  Reload:
+    Success: '&aYaml-Dateien & Mysql wurden neu geladen.'
+    Error: '&cEs wurde ein Fehler gefunden! Siehe Konsole!'
+  Item:
+    NoItemInHand: '&cDu hast kein Item in der Hand!'
+    ItemNameAlreadyExist: '&cDer Itemname &f%itemname% &cist schon vergeben. Bitte ändere den Itemnamen ab!'
+    ItemCreate: '&eDas Item &f%itemname% &ewurde erstellt. Klicken Sie auf die Nachricht um den Namen durch die URL Abfrage zu kopieren.'
+    ItemDelete: '&eDas Item &f%itemname% &ewurde &cgelöscht.'
+    ItemNameNotExist: '&cDas Item &f%item% &cexistiert nicht.'
+  Book:
+    BookNotExist: '&cDas Buch &f%bookname% &cexistiert nicht.'
+    BookError: '&cDas Buch &f%bookname% &chat beinhaltet einen Fehler. Es kann nicht geöffnet werden!'
+    ItemIsNotABook: '&cDas Item &f%bookname% &cist kein Buch!'
+    BookUtilIsMissing: '&cDas Plugin BookUtil ist nicht geladen worden oder fehlt!'
+  Send:
+    PathNotExist: '&cDer Pfad existiert nicht!'
+    Sending: '&eAutoMessage &f%path% &ewird gesendet...'
