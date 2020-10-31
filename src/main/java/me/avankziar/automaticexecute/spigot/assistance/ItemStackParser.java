@@ -44,8 +44,7 @@ public class ItemStackParser
         }
     }
     
-    @SuppressWarnings("deprecation")
-	public String convertItemStackToJson(ItemStack itemStack) //FIN
+    public String convertItemStackToJson(ItemStack itemStack) //FIN
 	{
 		/*
 		 * so baut man das manuell

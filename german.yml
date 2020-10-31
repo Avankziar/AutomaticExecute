@@ -5,9 +5,10 @@ NoNumber: '&cDas Argument &f%arg% &cmuss eine ganze Zahl sein.'
 CmdAutoE:
   Info:
     Headline: '&e==========&7[&6AutomaticExecute&7]&e=========='
-    reload: '&c/autoex(b) reload &f| Lädt auf vom Plugin die Yaml-Dateien und die Mysql neu.'
+    bungeereload: '&c/autoexb bungeereload &f| Lädt auf vom Plugin die Yaml-Dateien und die Mysql neu.'
+    spigotreload: '&c/autoex spigotreload &f| Lädt auf vom Plugin die Yaml-Dateien und die Mysql neu.'
     book: '&c/autoex book <bookpath> &f| Öffnet das Buch aus der Mysql.'
-    item: '&c/autoex item &f| Speicher oder löscht das Item in die Datenbank.'
+    item: '&c/autoex item &f| Speichert oder löscht das Item in die Datenbank.'
     send: '&c/autoex send <messagepath> &f| Sendet die Automessage sofort, außer der Zeit, allen Angaben entsprechend.'
     NotExist: '&cDie AutoMessage existiert nicht!'
   Reload:

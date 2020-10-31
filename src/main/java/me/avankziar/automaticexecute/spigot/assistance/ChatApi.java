@@ -1,11 +1,10 @@
 package main.java.me.avankziar.automaticexecute.spigot.assistance;
 
-import java.io.IOException;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
 
 import main.java.me.avankziar.automaticexecute.spigot.AutomaticExecute;
 import net.md_5.bungee.api.ChatColor;
@@ -16,11 +15,12 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
+@SuppressWarnings("deprecation")
 public class ChatApi
-{
+{	
 	public static String tl(String s)
 	{
-		return ChatColor.translateAlternateColorCodes('&', s);
+		return parseHex(ChatColor.translateAlternateColorCodes('&', s));
 	}
 	
 	public static TextComponent tc(String s)
@@ -30,7 +30,7 @@ public class ChatApi
 	
 	public static TextComponent tctl(String s)
 	{
-		return new TextComponent(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', s)));
+		return new TextComponent(TextComponent.fromLegacyText(tl(s)));
 	}
 	
 	public static TextComponent TextWithExtra(String s, List<BaseComponent> list)
@@ -54,13 +54,14 @@ public class ChatApi
 		return msg;
 	}
 	
-	public static TextComponent hoverEvent(TextComponent msg, HoverEvent.Action haction, String[] hover)
+	public static TextComponent hoverEvent(TextComponent msg, HoverEvent.Action haction, String hover)
 	{
+		String sepnewline = "~!~";
 		ArrayList<BaseComponent> components = new ArrayList<>();
 		TextComponent hoverMessage = new TextComponent(new ComponentBuilder().create());
 		TextComponent newLine = new TextComponent(ComponentSerializer.parse("{text: \"\n\"}"));
 		int i = 0; 
-		for(String h : hover)
+		for(String h : hover.split(sepnewline))
 		{
 			if(i == 0)
 			{
@@ -78,15 +79,16 @@ public class ChatApi
 		return msg;
 	}
 	
-	public static TextComponent hoverEvent(String text, HoverEvent.Action haction, String[] hover)
+	public static TextComponent hoverEvent(String text, HoverEvent.Action haction, String hover)
 	{
+		String sepnewline = "~!~";
 		TextComponent msg = null;
 		ArrayList<BaseComponent> components = new ArrayList<>();
 		msg = tctl(text);
 		TextComponent hoverMessage = new TextComponent(new ComponentBuilder().create());
 		TextComponent newLine = new TextComponent(ComponentSerializer.parse("{text: \"\n\"}"));
 		int i = 0; 
-		for(String h : hover)
+		for(String h : hover.split(sepnewline))
 		{
 			if(i == 0)
 			{
@@ -105,7 +107,7 @@ public class ChatApi
 	}
 	
 	public static TextComponent apiChat(String text, ClickEvent.Action caction, String cmd,
-			HoverEvent.Action haction, String[] hover)
+			HoverEvent.Action haction, String hover)
 	{
 		TextComponent msg = null;
 		msg = tctl(text);
@@ -133,6 +135,229 @@ public class ChatApi
 		return msg;
 	}
 	
+	public static TextComponent generateTextComponentII(String message)
+	{
+		String idclick = "click";
+		String idhover = "hover";
+		String sepb = "~";
+		String sepw = "@";
+		String sepspace = "+";
+		TextComponent tc = ChatApi.tc("");
+		List<BaseComponent> list = new ArrayList<>();
+		String[] space = message.split(" ");
+		for(String word : space)
+		{
+			TextComponent newtc = null;
+			if(word.contains(sepb))
+			{
+				String[] function = word.split(sepb);
+				newtc = ChatApi.tctl(function[0].replace(sepspace, " ")+" ");
+				if(function.length == 2)
+				{
+					if(function[1].contains(idhover))
+					{
+						String[] at = function[1].split(sepw);
+						ChatApi.hoverEvent(newtc,HoverEvent.Action.valueOf(at[1]), at[2].replace(sepspace, " "));
+					}
+					if(function[1].contains(idclick))
+					{
+						String[] at = function[1].split(sepw);
+						ChatApi.clickEvent(newtc,ClickEvent.Action.valueOf(at[1]), at[2].replace(sepspace, " "));
+					}
+				}
+				if(function.length == 3)
+				{
+					if(function[1].contains(idhover))
+					{
+						String[] at = function[1].split(sepw);
+						ChatApi.hoverEvent(newtc,HoverEvent.Action.valueOf(at[1]), at[2].replace(sepspace, " "));
+					} else if(function[2].contains(idhover))
+					{
+						String[] at = function[2].split(sepw);
+						ChatApi.hoverEvent(newtc,HoverEvent.Action.valueOf(at[1]), at[2].replace(sepspace, " "));
+					}
+					if(function[1].contains(idclick))
+					{
+						String[] at = function[1].split(sepw);
+						ChatApi.clickEvent(newtc,ClickEvent.Action.valueOf(at[1]), at[2].replace(sepspace, " "));
+					} else if(function[2].contains(idclick))
+					{
+						String[] at = function[2].split(sepw);
+						ChatApi.clickEvent(newtc,ClickEvent.Action.valueOf(at[1]), at[2].replace(sepspace, " "));
+					}
+				}
+			} else
+			{
+				newtc = ChatApi.tctl(word+" ");
+			}
+			list.add(newtc);
+		}
+		tc.setExtra(list);
+		return tc;
+	}
+	
+	private static String parseHex(String text) 
+	{
+		supportsHex = checkHexSupport();
+		return parseHexText(text, findHexIndexes(text));
+	}
+	
+	private static List<Integer> findHexIndexes(String text) 
+	{
+        int index;
+        ArrayList<Integer> indexes = new ArrayList<Integer>();
+        int i = 0;
+        while ((index = text.indexOf("&#", i)) != -1) {
+            indexes.add(index);
+            ++i;
+        }
+        return indexes;
+    }
+
+    private static String parseHexText(String text, List<Integer> indexes) 
+    {
+        //int HEX_LENGTH = 7;
+        StringBuilder newText = new StringBuilder();
+        StringBuilder currentHex = new StringBuilder();
+        boolean isInHex = false;
+        for (int i = 0; i < text.length(); ++i) 
+        {
+            if (indexes.contains(i)) 
+            {
+                isInHex = true;
+                continue;
+            }
+            if (isInHex) {
+                currentHex.append(text.charAt(i));
+                if (currentHex.length() != 7) continue;
+                isInHex = false;
+                newText.append(nearestColor(currentHex.toString()));
+                currentHex.setLength(0);
+                continue;
+            }
+            newText.append(text.charAt(i));
+        }
+        return newText.toString();
+    }
+
+	private static String nearestColor(String hex) 
+    {
+        if (supportsHex()) 
+        {
+            return ChatColor.of((String)hex).toString();
+        }
+        Color awtColor = Color.decode(hex);
+        ChatColor nearestColor = ChatColor.WHITE;
+        double shorterDistance = -1.0;
+        for (ChatColor chatColor : ChatColor.values()) 
+        {
+            Color color = getChatColorPaint(chatColor, awtColor);
+            if (color == null) continue;
+            double distance = calcColorDistance(awtColor, color);
+            if (shorterDistance != -1.0 && !(distance < shorterDistance)) continue;
+            nearestColor = chatColor;
+            shorterDistance = distance;
+        }
+        return nearestColor.toString();
+    }
+
+    private static Color getChatColorPaint(ChatColor chatColor, Color awtColor) 
+    {
+        if (awtColor.getRed() == awtColor.getBlue() && awtColor.getBlue() == awtColor.getGreen()) 
+        {
+            if (ChatColor.BLACK.equals((Object)chatColor)) 
+            {
+                return new Color( 0x000000 );
+            }
+            if (ChatColor.DARK_GRAY.equals((Object)chatColor)) 
+            {
+                return new Color( 0x555555 );
+            }
+            if (ChatColor.GRAY.equals((Object)chatColor)) 
+            {
+                return new Color( 0xAAAAAA );
+            }
+            if (ChatColor.WHITE.equals((Object)chatColor)) 
+            {
+                return new Color( 0xFFFFFF );
+            }
+        }
+        if (ChatColor.AQUA.equals((Object)chatColor)) 
+        {
+            return new Color( 0x55FFFF );
+        }
+        if (ChatColor.BLUE.equals((Object)chatColor)) 
+        {
+            return new Color( 0x05555FF );
+        }
+        if (ChatColor.DARK_BLUE.equals((Object)chatColor)) 
+        {
+            return new Color( 0x0000AA );
+        }
+        if (ChatColor.DARK_AQUA.equals((Object)chatColor)) 
+        {
+            return new Color( 0x00AAAA );
+        }
+        if (ChatColor.GREEN.equals((Object)chatColor)) 
+        {
+            return new Color( 0x55FF55 );
+        }
+        if (ChatColor.DARK_GREEN.equals((Object)chatColor)) 
+        {
+            return new Color( 0x00AA00 );
+        }
+        if (ChatColor.DARK_PURPLE.equals((Object)chatColor)) 
+        {
+            return new Color( 0xAA00AA );
+        }
+        if (ChatColor.LIGHT_PURPLE.equals((Object)chatColor)) 
+        {
+            return new Color( 0xFF55FF );
+        }
+        if (ChatColor.RED.equals((Object)chatColor)) 
+        {
+            return new Color( 0xFF5555 );
+        }
+        if (ChatColor.DARK_RED.equals((Object)chatColor)) 
+        {
+            return new Color( 0xAA0000 );
+        }
+        if (ChatColor.YELLOW.equals((Object)chatColor))
+        {
+            return new Color( 0xFFFF55 );
+        }
+        if (ChatColor.GOLD.equals((Object)chatColor)) 
+        {
+            return new Color( 0xFFAA00 );
+        }
+        return null;
+    }
+
+    private static double calcColorDistance(Color awtColor, Color color) 
+    {
+        return Math.sqrt(Math.pow(awtColor.getRed() - color.getRed(), 2.0) + Math.pow(awtColor.getGreen() - color.getGreen(), 2.0) + Math.pow(awtColor.getBlue() - color.getBlue(), 2.0));
+    }
+    
+    private static boolean supportsHex;
+    
+    private static boolean checkHexSupport() 
+    {
+        try 
+        {
+            ChatColor.of((Color)Color.BLACK);
+            return true;
+        }
+        catch (NoSuchMethodError e) 
+        {
+            return false;
+        }
+    }
+
+    public static boolean supportsHex() 
+    {
+        return supportsHex;
+    }
+	
 	public static TextComponent generateTextComponent(String message)
 	{
 		AutomaticExecute plugin = AutomaticExecute.plugin;
@@ -144,10 +369,9 @@ public class ChatApi
 		String sepb = cfg.getString("Seperator.BetweenFunction");
 		String sepw = cfg.getString("Seperator.WhithinFuction");
 		String sepspace = cfg.getString("Seperator.Space");
-		String sepnewline = cfg.getString("Seperator.HoverNewLine");
 		List<BaseComponent> list = new ArrayList<BaseComponent>();
 		TextComponent textcomponent = tc("");
-		String lastColor = null;
+		String lastColor = "";
 		for(int i = 0; i < array.length; i++)
 		{
 			String word = array[i];
@@ -187,24 +411,14 @@ public class ChatApi
 									continue;
 								}
 								String bookpath = function[1];
-								String book_json = null;
-								try
-								{
-									String base64 = (String)plugin.getMysqlHandler().getDataI(
-											bookpath, "itemstack_json", "item_name");
-									ItemStack book = ItemStackParser.FromBase64ItemStack(base64);
-									book_json = plugin.getItemStackParser().convertItemStackToJson(book);
-								} catch (IOException e)
-								{
-									e.printStackTrace();
-								}
+								String book_json = (String) plugin.getMysqlHandler().getDataI(bookpath, "item_name", "itemstack_json");
 								if(book_json == null)
 								{
 									list.add(tctl(originmessage));
 									break;
 								}
 								TextComponent tc = apiChatItem(originmessage,
-										ClickEvent.Action.RUN_COMMAND, "/autoex book "+bookpath, book_json);
+										ClickEvent.Action.RUN_COMMAND, "/autom book "+bookpath, book_json);
 								list.add(tc);
 								break;
 							}
@@ -233,24 +447,12 @@ public class ChatApi
 								}
 								if(function[1].equals("SHOW_ITEM"))
 								{
-									String base64 = (String)plugin.getMysqlHandler().getDataI(
-											function[2], "itemstack_json", "item_name");
-									ItemStack item = null;
-									String item_json = null;
-									try
-									{
-										item = ItemStackParser.FromBase64ItemStack(base64);
-										item_json = plugin.getItemStackParser().convertItemStackToJson(item);
-									} catch (IOException e)
-									{
-										e.printStackTrace();
-									}
-									
-									
-									if(item_json != null)
+									String hoverstring = (String) plugin.getMysqlHandler().getDataI(
+											function[2], "item_name", "itemstack_json");
+									if(hoverstring != null)
 									{
 										hoverEvent(tc, HoverEvent.Action.SHOW_ITEM,
-												item_json.split(sepnewline));
+												hoverstring);
 									}
 								} else
 								{
@@ -259,7 +461,7 @@ public class ChatApi
 									String hoverstring = tl(
 											plugin.getYamlHandler().getA().getString(hoverstringpath));
 									hoverEvent(tc, HoverEvent.Action.valueOf(hoveraction),
-											hoverstring.split(sepnewline));
+											hoverstring);
 								}
 							}
 						}
