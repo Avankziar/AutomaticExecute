@@ -35,11 +35,24 @@ public class MysqlSetup
 	public boolean connectToDatabase() 
 	{
 		AutomaticExecute.log.info("Connecting to the database...");
-		try 
-		{
-       	 	//Load Drivers
-            Class.forName("com.mysql.jdbc.Driver");
-            Properties properties = new Properties();
+		boolean bool = false;
+	    try
+	    {
+	    	// Load new Drivers for papermc
+	    	Class.forName("com.mysql.cj.jdbc.Driver");
+	    	bool = true;
+	    } catch (Exception e)
+	    {
+	    	bool = false;
+	    } 
+	    try
+	    {
+	    	if (bool == false)
+	    	{
+	    		// Load old Drivers for spigot
+	    		Class.forName("com.mysql.jdbc.Driver");
+	    	}
+	        Properties properties = new Properties();
             properties.setProperty("user", plugin.getYamlHandler().get().getString("Mysql.User"));
             properties.setProperty("password", plugin.getYamlHandler().get().getString("Mysql.Password"));
             properties.setProperty("autoReconnect", 
