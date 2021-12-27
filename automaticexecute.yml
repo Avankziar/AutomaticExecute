@@ -1,3 +1,47 @@
+#MessageNEW: Please Ignore!
+#  Rythmus: '' #ONCE only once, ONCE_A_DAY multiple but once a day, MULTIPLE_ON_THE_DAY INTERVAL in intervals, ON_TIMES for Times on all days
+#  Sending:
+#    Day: '' #The day of the Month
+#    DayOfTheWeek: '' #<Number>, f.e. 2 means thursday
+#    Month: '' #<Number>, f.e. 3 means march
+#    Year: '' #F.e. 2022
+#    IntervalBetweenMessage:
+#      Second: ''
+#      Minute: ''
+#      Hour: ''
+#      Day: '' 
+#  SendingTime: '' #HH:mm:ss   ALT
+#    Dates:
+#    - ~11.03.2023 #dd.MM.yyyy
+#    - ~05.08.2030
+#    Times:  #~HH:mm:ss Attention! ~-Symbol muss before written!
+#    - ~11:20:00
+#    - ~13:20:00
+#  Permission: '' #can be deleted for no perm
+#  Sounds: #Only bukkit/Spigot
+#  - UI_CARTOGRAPHY_TABLE_TAKE_RESULT
+#  SoundsWithPermission: #Only bukkit/Spigot
+#  - UI_CARTOGRAPHY_TABLE_TAKE_RESULT
+#  ConsoleCommand:
+#  - help
+#  - restart
+#  DoPlayerCommandWithPermission: false #is this true, it do PlayerCommand with Permission, if false it do it without.
+#  PlayerCommand:
+#  - test <player>
+#  TitleMessage: 'Title~SubTitle~FadeIn(aka Number)~Stay(aka Number)~FadeOut(aka Number)'
+#  TitleMessageWithPermission: 'Title~SubTitle~FadeIn(aka Number)~Stay(aka Number)~FadeOut(aka Number)'
+#  IsRandom: false #if Random, than a random message from a Path in this file showing
+#  RandomMessage:
+#  - MessageOne.MessagePath1
+#  - MessageOne.MessagePath2
+#  Message:
+#  - Line 1
+#  - §cLine 2 but in red
+#  MessagePath1:
+#  - Test
+#  MessagePath2:
+#  - Test 2
+
 #MessageOne:
 #  Rythmus: '' #ONCE only once, ONCE_A_DAY multiple but once a day, MULTIPLE_ON_THE_DAY INTERVAL in intervals, ON_TIMES for Times on all days
 #  SendingDate: '' #Only by ONCE to use dd.MM.yyyy

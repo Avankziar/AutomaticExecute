@@ -2,7 +2,7 @@ Future
 - Nachrichten die möglichkeit bieten, diese nicht einzublenden. Dafür in der jeweiligen Config muss die Nachricht dafür extra einen true boolean
   bekommen. erst dann kann der spieler diese nachricht extern abschalten.
 
-Build 2
+Build 3
 - Ändern der pfade, sodass für die Verschiedenen funktionen, bspw. ONCE ein pfad in der yml existeriert der Once heißt und 
   dort alle Info zu den Zeiten drin sind. aka dd.MM.YYYY HH:mm:ss etc. Bei Mehrfach anzeigen spilten in Datum und 
   zeitliste etc.
@@ -13,6 +13,9 @@ Build 2
 - Einmal im Jahr und Interval mäßig an diesem tag.
 - Einmal im Jahr und Zeitlisten mäßig an diesem tag.
 - Blacklisten für bestimmte daten machen. aka jeden Sonntag, jedoch an feiertagen nicht
+- So bauen, dass nur bestimmte Server (auf Bungee) angesteuert werden könnte.
+- Auf bungeecord es möglich machen, Spigot befehle zu senden.
+- +Alle Befehle sowie die Datenanbindung herausgenommen.
 
 Build 1
 - +/autoex | Infobefehl

@@ -1,20 +1,6 @@
 name: AutomaticExecute
 main: main.java.me.avankziar.automaticexecute.spigot.AutomaticExecute
-version: 2
+version: 3
 author: Avankziar
-api-version: 1.16
+api-version: 1.18
 description: A Auto Execute System
-softdepend: [BookUtil]
-commands:
-  autoex:
-    description: A automaticexecute command for spigot.
-permissions:
-  autoexecute.cmd.item:
-    description: Enable command rights, to save a itemstack in mysql using /autoex item.
-    default: false
-  autoexecute.cmd.book:
-    description: Enable command rights, to read a book from a displayed item in chat.
-    default: false
-  autoexecute.cmd.reload:
-    description: Enable command rights, to reload the yaml files and mysql using /autoex <spigotreload/bungeereload>.
-    default: false
