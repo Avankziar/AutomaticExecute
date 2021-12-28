@@ -1,4 +1,4 @@
-package main.java.me.avankziar.autoex.spigot.object;
+package main.java.me.avankziar.aex.spigot.object;
 
 public class Title
 {

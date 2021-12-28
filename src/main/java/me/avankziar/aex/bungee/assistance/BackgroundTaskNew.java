@@ -1,4 +1,4 @@
-package main.java.me.avankziar.autoex.bungee.assistance;
+package main.java.me.avankziar.aex.bungee.assistance;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import main.java.me.avankziar.autoex.bungee.AutomaticExecute;
-import main.java.me.avankziar.autoex.bungee.database.YamlHandler;
-import main.java.me.avankziar.autoex.bungee.object.AutoMessage;
-import main.java.me.avankziar.autoex.general.Rythmus;
+import main.java.me.avankziar.aex.bungee.AutomaticExecute;
+import main.java.me.avankziar.aex.bungee.database.YamlHandler;
+import main.java.me.avankziar.aex.bungee.object.AutoMessage;
+import main.java.me.avankziar.aex.general.Rythmus;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.Title;
@@ -21,13 +21,13 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 import net.md_5.bungee.config.Configuration;
 
-public class BackgroundTask
+public class BackgroundTaskNew
 {
 	private AutomaticExecute plugin;
 	private ScheduledTask task;
 	public static List<AutoMessage> AutoMessageList = new ArrayList<AutoMessage>();
 	
-	public BackgroundTask(AutomaticExecute plugin)
+	public BackgroundTaskNew(AutomaticExecute plugin)
 	{
 		this.plugin = plugin;
 		loadBackgroundTask();
@@ -206,7 +206,7 @@ public class BackgroundTask
 	
 	public void autoSendMessage(LocalDateTime now)
 	{
-		AutomaticExecute.log.info("AutomaticExecute starts Scheduler at "+Utility.serialisedDateTime(now));
+		document("AutomaticExecute starts Scheduler at "+Utility.serialisedDateTime(now));
 		plugin.getProxy().getScheduler().schedule(plugin, new Runnable() 
 		{
 			
@@ -223,19 +223,19 @@ public class BackgroundTask
 				int year = ld.getYear();
 				for(AutoMessage am : AutoMessageList)
 				{
-					if(am.getRythmus() == Rythmus.ONCE)
+					if(am.getRythmus() == Rythmus.ONCE_ONLY)
 					{
 						doONCE(am, day, month, year, hour, min, sec);
 					} else if(am.getRythmus() == Rythmus.ONCE_A_DAY)
 					{
 						doONCE_A_DAY(am, hour, min, sec);
-					} else if(am.getRythmus() == Rythmus.ON_TIMES)
+					} else if(am.getRythmus() == Rythmus.ON_TIMES_PER_DAY)
 					{
 						doON_TIMES(am, hour, min, sec);
 					} else if(am.getRythmus() == Rythmus.MULTIPLE_ON_THE_DAY)
 					{
 						doMULTIPLE_ON_THE_DAY(am, day, month, year, hour, min, sec);
-					} else if(am.getRythmus() == Rythmus.INTERVAL)
+					} else if(am.getRythmus() == Rythmus.INTERVAL_ONLY)
 					{
 						doINTERVAL(am, day, month, year, hour, min, sec);
 					}
@@ -257,8 +257,7 @@ public class BackgroundTask
 				am.getTime().getMinute() == min &&
 				am.getTime().getSecond() == sec)
 		{
-			AutomaticExecute.log.info(am.getPathName()+": ONCE at "
-					+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
+			document(am.getPathName()+": ONCE at "+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
 				sendToPlayersRandom(am);
@@ -279,8 +278,7 @@ public class BackgroundTask
 				am.getTime().getMinute() == min &&
 				am.getTime().getSecond() == sec)
 		{
-			AutomaticExecute.log.info(am.getPathName()+": ONCE_A_DAY at "
-					+hour+":"+min+":"+sec);
+			document(am.getPathName()+": ONCE_A_DAY at "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
 				sendToPlayersRandom(am);
@@ -310,8 +308,7 @@ public class BackgroundTask
 		}
 		if(check == true)
 		{
-			AutomaticExecute.log.info(am.getPathName()+": ON_TIMES at "
-					+hour+":"+min+":"+sec);
+			document(am.getPathName()+": ON_TIMES at "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
 				sendToPlayersRandom(am);
@@ -338,8 +335,7 @@ public class BackgroundTask
 				am.getDate().getDayOfMonth() == day &&
 				now >= am.getLastTimeSend())
 		{
-			AutomaticExecute.log.info(am.getPathName()+": MULTIPLE_ON_THE_DAY at "
-					+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
+			document(am.getPathName()+": MULTIPLE_ON_THE_DAY at "+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
 				
@@ -362,8 +358,7 @@ public class BackgroundTask
 		}
 		if(now >= am.getLastTimeSend())
 		{
-			AutomaticExecute.log.info(am.getPathName()+": INTERVAL at "
-					+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
+			document(am.getPathName()+": INTERVAL at "+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
 				sendToPlayersRandom(am);
@@ -454,6 +449,15 @@ public class BackgroundTask
 		return;
 	}
 	
+	private void consoleCommandPerPlayer(AutoMessage am, ProxiedPlayer player)
+	{
+		for(String cmd : am.getConsoleCommand())
+		{
+			BungeeCord.getInstance().getPluginManager().dispatchCommand(plugin.getProxy().getConsole(), cmd.replace("%player%", player.getName()));
+		}
+		return;
+	}
+	
 	private void playerCommand(boolean permission, AutoMessage am, ProxiedPlayer player)
 	{
 		if(permission)
@@ -491,6 +495,14 @@ public class BackgroundTask
 			{
 				player.sendTitle(am.getTitle());
 			}
+		}
+	}
+	
+	private void document(String s)
+	{
+		if(plugin.getYamlHandler().getConfig().getBoolean("DocumentExecuteInLog"))
+		{
+			AutomaticExecute.log.info(s);
 		}
 	}
 }

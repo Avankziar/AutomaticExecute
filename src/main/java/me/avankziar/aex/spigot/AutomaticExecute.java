@@ -1,4 +1,4 @@
-package main.java.me.avankziar.autoex.spigot;
+package main.java.me.avankziar.aex.spigot;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -7,10 +7,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import main.java.me.avankziar.autoex.general.YamlManager;
-import main.java.me.avankziar.autoex.spigot.assistance.BackgroundTask;
-import main.java.me.avankziar.autoex.spigot.assistance.Utility;
-import main.java.me.avankziar.autoex.spigot.database.YamlHandler;
+import main.java.me.avankziar.aex.general.YamlManager;
+import main.java.me.avankziar.aex.spigot.assistance.BackgroundTask;
+import main.java.me.avankziar.aex.spigot.assistance.Utility;
+import main.java.me.avankziar.aex.spigot.database.YamlHandler;
 
 public class AutomaticExecute extends JavaPlugin
 {
@@ -26,6 +26,12 @@ public class AutomaticExecute extends JavaPlugin
 	{
 		plugin = this;
 		log = getLogger();
+		log.info("  █████╗ ███████╗██╗  ██╗ | API-Version: "+plugin.getDescription().getAPIVersion());
+		log.info(" ██╔══██╗██╔════╝╚██╗██╔╝ | Author: "+plugin.getDescription().getAuthors().toString());
+		log.info(" ███████║█████╗   ╚███╔╝  | Plugin Website: "+plugin.getDescription().getWebsite());
+		log.info(" ██╔══██║██╔══╝   ██╔██╗  | Depend Plugins: "+plugin.getDescription().getDepend().toString());
+		log.info(" ██║  ██║███████╗██╔╝ ██╗ | SoftDepend Plugins: "+plugin.getDescription().getSoftDepend().toString());
+		log.info(" ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ | LoadBefore: "+plugin.getDescription().getLoadBefore().toString());
 		try
 		{
 			yamlHandler = new YamlHandler(this);

@@ -1,14 +1,14 @@
-package main.java.me.avankziar.autoex.bungee;
+package main.java.me.avankziar.aex.bungee;
 
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import main.java.me.avankziar.autoex.bungee.assistance.BackgroundTask;
-import main.java.me.avankziar.autoex.bungee.assistance.ChatApi;
-import main.java.me.avankziar.autoex.bungee.assistance.Utility;
-import main.java.me.avankziar.autoex.bungee.database.YamlHandler;
-import main.java.me.avankziar.autoex.general.YamlManager;
+import main.java.me.avankziar.aex.bungee.assistance.BackgroundTask;
+import main.java.me.avankziar.aex.bungee.assistance.ChatApi;
+import main.java.me.avankziar.aex.bungee.assistance.Utility;
+import main.java.me.avankziar.aex.bungee.database.YamlHandler;
+import main.java.me.avankziar.aex.general.YamlManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -28,9 +28,13 @@ public class AutomaticExecute extends Plugin
 	{
 		plugin = this;
 		log = getLogger();
-		/*
-		 * Initialization of all project important variables
-		 */
+		//https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow&t=AEX
+		log.info("  █████╗ ███████╗██╗  ██╗ | API-Version: "+plugin.getDescription().getVersion());
+		log.info(" ██╔══██╗██╔════╝╚██╗██╔╝ | Author: "+plugin.getDescription().getAuthor());
+		log.info(" ███████║█████╗   ╚███╔╝  | Plugin Website: Comming soon");
+		log.info(" ██╔══██║██╔══╝   ██╔██╗  | Depend Plugins: "+plugin.getDescription().getDepends().toString());
+		log.info(" ██║  ██║███████╗██╔╝ ██╗ | SoftDepend Plugins: "+plugin.getDescription().getSoftDepends().toString());
+		log.info(" ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ | Have Fun^^");
 		yamlHandler = new YamlHandler(this);
 		utility = new Utility(this);
 		backgroundTask = new BackgroundTask(this);

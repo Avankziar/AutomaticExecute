@@ -1,11 +1,11 @@
-package main.java.me.avankziar.autoex.general;
+package main.java.me.avankziar.aex.general;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import main.java.me.avankziar.autoex.general.Language.ISO639_2B;
+import main.java.me.avankziar.aex.general.Language.ISO639_2B;
 
 public class YamlManager
 {

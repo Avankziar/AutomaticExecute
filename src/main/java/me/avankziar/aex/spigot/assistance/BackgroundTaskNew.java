@@ -1,4 +1,4 @@
-package main.java.me.avankziar.autoex.spigot.assistance;
+package main.java.me.avankziar.aex.spigot.assistance;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,11 +14,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import main.java.me.avankziar.autoex.general.Rythmus;
-import main.java.me.avankziar.autoex.spigot.AutomaticExecute;
-import main.java.me.avankziar.autoex.spigot.database.YamlHandler;
-import main.java.me.avankziar.autoex.spigot.object.AutoMessage;
-import main.java.me.avankziar.autoex.spigot.object.Title;
+import main.java.me.avankziar.aex.general.Rythmus;
+import main.java.me.avankziar.aex.spigot.AutomaticExecute;
+import main.java.me.avankziar.aex.spigot.database.YamlHandler;
+import main.java.me.avankziar.aex.spigot.object.AutoMessage;
+import main.java.me.avankziar.aex.spigot.object.Title;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class BackgroundTaskNew

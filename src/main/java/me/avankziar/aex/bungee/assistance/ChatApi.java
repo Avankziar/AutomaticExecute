@@ -1,10 +1,10 @@
-package main.java.me.avankziar.autoex.bungee.assistance;
+package main.java.me.avankziar.aex.bungee.assistance;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.me.avankziar.autoex.bungee.AutomaticExecute;
+import main.java.me.avankziar.aex.bungee.AutomaticExecute;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;

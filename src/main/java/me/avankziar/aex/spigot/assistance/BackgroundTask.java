@@ -1,5 +1,4 @@
-package main.java.me.avankziar.autoex.bungee.assistance;
-
+package main.java.me.avankziar.aex.spigot.assistance;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -7,31 +6,31 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
-import main.java.me.avankziar.autoex.bungee.AutomaticExecute;
-import main.java.me.avankziar.autoex.bungee.database.YamlHandler;
-import main.java.me.avankziar.autoex.bungee.object.AutoMessage;
-import main.java.me.avankziar.autoex.general.Rythmus;
-import net.md_5.bungee.BungeeCord;
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.Title;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import main.java.me.avankziar.aex.general.Rythmus;
+import main.java.me.avankziar.aex.spigot.AutomaticExecute;
+import main.java.me.avankziar.aex.spigot.database.YamlHandler;
+import main.java.me.avankziar.aex.spigot.object.AutoMessage;
+import main.java.me.avankziar.aex.spigot.object.Title;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.scheduler.ScheduledTask;
-import net.md_5.bungee.config.Configuration;
 
-public class BackgroundTaskNew
+public class BackgroundTask
 {
 	private AutomaticExecute plugin;
-	private ScheduledTask task;
 	public static List<AutoMessage> AutoMessageList = new ArrayList<AutoMessage>();
 	
-	public BackgroundTaskNew(AutomaticExecute plugin)
+	public BackgroundTask(AutomaticExecute plugin)
 	{
 		this.plugin = plugin;
 		loadBackgroundTask();
 		runTask();
+		
 	}
 	
 	public boolean loadBackgroundTask()
@@ -47,17 +46,17 @@ public class BackgroundTaskNew
 			AutoMessageList.clear();
 		}
 		YamlHandler yh = plugin.getYamlHandler();
-		Configuration auto = yh.getAutoEx();
+		YamlConfiguration auto = yh.getAutoEx();
 		String sepb = yh.getConfig().getString("Seperator.BetweenFunction", "~");
-		for(String path : yh.getAutoEx().getKeys())
+		for(String path : yh.getAutoEx().getKeys(false))
 		{
 			AutomaticExecute.log.info("Loading Message: "+path);
 			if(auto.getString(path+".Rythmus") == null) continue;
 			Rythmus rythmus = Rythmus.valueOf(auto.getString(path+".Rythmus", "ONCE"));
 			String permission = null;
-			if(auto.getString(path+".Permission", null) != null) permission = auto.getString(path+".Permission");
+			if(auto.getString(path+".Permission") != null) permission = auto.getString(path+".Permission");
 			LocalDate date = null;
-			if(auto.getString(path+".SendingDate", null) != null)
+			if(auto.getString(path+".SendingDate") != null)
 			{
 				 date = LocalDate.parse((CharSequence)auto.getString(path+".SendingDate"),
 							DateTimeFormatter.ofPattern("dd.MM.yyyy"));
@@ -68,7 +67,7 @@ public class BackgroundTaskNew
 			LocalTime time = null;
 			long interval = 0;
 			long lasttimesend = System.currentTimeMillis();
-			if(auto.getString(path+".SendingTime", null) != null)
+			if(auto.get(path+".SendingTime") != null)
 			{
 				if(auto.getString(path+".SendingTime").split(":").length==3)
 				{
@@ -85,7 +84,7 @@ public class BackgroundTaskNew
 				lasttimesend += interval;
 			}
 			List<LocalTime> timelist = new ArrayList<>();
-			if(auto.get(path+".SendingTimes", null) != null)
+			if(auto.getStringList(path+".SendingTimes") != null)
 			{
 				for(String tl : auto.getStringList(path+".SendingTimes"))
 				{
@@ -94,7 +93,7 @@ public class BackgroundTaskNew
 				}
 			}
 			boolean isRandom = false;
-			if(auto.get(path+".IsRandom", null)!=null)
+			if(auto.get(path+".IsRandom")!=null)
 			{
 				isRandom = auto.getBoolean(path+".IsRandom");
 			}
@@ -103,9 +102,9 @@ public class BackgroundTaskNew
 			{
 				for(String otherpath : auto.getStringList(path+".RandomMessage"))
 				{
-					if(auto.getString(otherpath, null) != null)
+					if(auto.getString(otherpath)!=null)
 					{
-						if(auto.getStringList(otherpath) != null)
+						if(auto.getStringList(otherpath)!=null)
 						{
 							List<TextComponent> rm = new ArrayList<TextComponent>();
 							for(String message : auto.getStringList(otherpath))
@@ -125,64 +124,90 @@ public class BackgroundTaskNew
 			List<String> consoleCommand = new ArrayList<String>();
 			boolean doPlayerCommandWithPermission = false;
 			List<String> playerCommand = new ArrayList<String>();
-			if(auto.get(path+".ConsoleCommand", null) != null)
+			if(auto.get(path+".DoConsoleCommand") != null)
 			{
-				consoleCommand = auto.getStringList(path+".ConsoleCommand");
+				if(auto.getStringList(path+".ConsoleCommand") != null)
+				{
+					consoleCommand = auto.getStringList(path+".ConsoleCommand");
+				}
 			}
-			if(auto.get(path+".DoPlayerCommand", null) != null)
+			if(auto.get(path+".DoPlayerCommand") != null)
 			{
-				if(auto.get(path+".PlayerCommand", null) != null)
+				if(auto.getStringList(path+".PlayerCommand") != null)
 				{
 					playerCommand = auto.getStringList(path+".PlayerCommand");
 				}
 			}
 			if(auto.get(path+".DoPlayerCommandWithPermission") != null)
 			{
-				doPlayerCommandWithPermission = auto.getBoolean(path+".DoPlayerCommandWithPermission", false);
-				if(auto.get(path+".PlayerCommand", null) != null)
+				doPlayerCommandWithPermission = auto.getBoolean(path+".DoPlayerCommandWithPermission");
+				if(auto.getStringList(path+".PlayerCommand") != null)
 				{
 					playerCommand = auto.getStringList(path+".PlayerCommand");
 				}
 			}
 			Title title = null;
-			if(auto.getString(path+".TitleMessage", null) != null)
+			if(auto.get(path+".TitleMessage") != null)
 			{
 				String[] ti = auto.getString(path+".TitleMessage").split(sepb);
 				if(ti.length == 5)
 				{
-					title = ProxyServer.getInstance().createTitle();
-					title.title(ChatApi.tctl(ti[0]));
-					title.subTitle(ChatApi.tctl(ti[1]));
-					title.fadeIn(Integer.parseInt(ti[2]));
-					title.stay(Integer.parseInt(ti[3]));
-					title.fadeOut(Integer.parseInt(ti[4]));
+					title = new Title(ChatApi.tl(ti[0]),
+							ChatApi.tl(ti[1]),
+							Integer.parseInt(ti[2]),
+							Integer.parseInt(ti[3]),
+							Integer.parseInt(ti[4]));
 				}
 			}
 			Title titleWithPermission = null;
-			if(auto.getString(path+".TitleMessageWithPermission", null) != null)
+			if(auto.get(path+".TitleMessageWithPermission") != null)
 			{
 				String[] ti = auto.getString(path+".TitleMessageWithPermission").split(sepb);
 				if(ti.length == 5)
 				{
-					titleWithPermission = ProxyServer.getInstance().createTitle();
-					titleWithPermission.title(ChatApi.tctl(ti[0]));
-					titleWithPermission.subTitle(ChatApi.tctl(ti[1]));
-					titleWithPermission.fadeIn(Integer.parseInt(ti[2]));
-					titleWithPermission.stay(Integer.parseInt(ti[3]));
-					titleWithPermission.fadeOut(Integer.parseInt(ti[4]));
+					titleWithPermission = new Title(
+							ChatApi.tl(ti[0]),
+							ChatApi.tl(ti[1]),
+							Integer.parseInt(ti[2]),
+							Integer.parseInt(ti[3]),
+							Integer.parseInt(ti[4]));
+				}
+			}
+			ArrayList<Sound> sounds = new ArrayList<Sound>();
+			if(auto.get(path+".Sounds") != null)
+			{
+				for(String s : auto.getStringList(path+".Sounds"))
+				{
+					try
+					{
+						Sound sound = Sound.valueOf(s);
+						sounds.add(sound);
+					} catch(IllegalArgumentException e){}
+				}
+			}
+			ArrayList<Sound> soundsWithPermission = new ArrayList<Sound>();
+			if(auto.get(path+".SoundsWithPermission") != null)
+			{
+				for(String s : auto.getStringList(path+".SoundsWithPermission"))
+				{
+					try
+					{
+						Sound sound = Sound.valueOf(s);
+						sounds.add(sound);
+					} catch(IllegalArgumentException e){}
 				}
 			}
 			AutoMessage am = new AutoMessage(path, rythmus, permission,
 					isRandom, RandomMessage, Message, title, titleWithPermission,
 					consoleCommand, doPlayerCommandWithPermission, playerCommand,
-					date, time, timelist, interval, lasttimesend);
+					date, time, timelist, interval, lasttimesend, sounds, soundsWithPermission);
 			AutoMessageList.add(am);
 		}
 	}
 	
 	public void runTask()
 	{
-		task = plugin.getProxy().getScheduler().schedule(plugin, new Runnable()
+		new BukkitRunnable()
 		{
 			
 			@Override
@@ -198,50 +223,50 @@ public class BackgroundTaskNew
 							|| now.getMinute() == 55))
 				{
 					autoSendMessage(now);
-					plugin.getProxy().getScheduler().cancel(task);
+					cancel();
 				}
 			}
-		}, 5L, 1L, TimeUnit.SECONDS);
+		}.runTaskTimer(plugin, 20*5L, 20L);
 	}
 	
 	public void autoSendMessage(LocalDateTime now)
 	{
-		document("AutomaticExecute starts Scheduler at "+Utility.serialisedDateTime(now));
-		plugin.getProxy().getScheduler().schedule(plugin, new Runnable() 
+		AutomaticExecute.log.info("AutomaticExecute starts Scheduler at "+Utility.serialisedDateTime(now));
+		new BukkitRunnable()
 		{
 			
 			@Override
-			public void run() 
+			public void run()
 			{
-				LocalTime lt = LocalTime.now();
-				int min = lt.getMinute();
-				int sec = lt.getSecond();
-				int hour = lt.getHour();
 				LocalDate ld = LocalDate.now();
 				int day = ld.getDayOfMonth();
 				int month = ld.getMonthValue();
 				int year = ld.getYear();
+				LocalTime lt = LocalTime.now();
+				int hour = lt.getHour();
+				int min = lt.getMinute();
+				int sec = lt.getSecond();
 				for(AutoMessage am : AutoMessageList)
 				{
-					if(am.getRythmus() == Rythmus.ONCE_ONLY)
+					if(am.getRythmus() == Rythmus.ONCE)
 					{
 						doONCE(am, day, month, year, hour, min, sec);
 					} else if(am.getRythmus() == Rythmus.ONCE_A_DAY)
 					{
 						doONCE_A_DAY(am, hour, min, sec);
-					} else if(am.getRythmus() == Rythmus.ON_TIMES_PER_DAY)
+					} else if(am.getRythmus() == Rythmus.ON_TIMES)
 					{
 						doON_TIMES(am, hour, min, sec);
 					} else if(am.getRythmus() == Rythmus.MULTIPLE_ON_THE_DAY)
 					{
 						doMULTIPLE_ON_THE_DAY(am, day, month, year, hour, min, sec);
-					} else if(am.getRythmus() == Rythmus.INTERVAL_ONLY)
+					} else if(am.getRythmus() == Rythmus.INTERVAL)
 					{
 						doINTERVAL(am, day, month, year, hour, min, sec);
 					}
 				}
 			}
-		}, 0L, 1L, TimeUnit.SECONDS);	
+		}.runTaskTimer(plugin, 0L, 1*20L);
 	}
 	
 	private void doONCE(AutoMessage am, int day, int month, int year, int hour, int min, int sec)
@@ -257,7 +282,8 @@ public class BackgroundTaskNew
 				am.getTime().getMinute() == min &&
 				am.getTime().getSecond() == sec)
 		{
-			document(am.getPathName()+": ONCE at "+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
+			AutomaticExecute.log.info(am.getPathName()+": ONCE at "
+					+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
 				sendToPlayersRandom(am);
@@ -278,7 +304,8 @@ public class BackgroundTaskNew
 				am.getTime().getMinute() == min &&
 				am.getTime().getSecond() == sec)
 		{
-			document(am.getPathName()+": ONCE_A_DAY at "+hour+":"+min+":"+sec);
+			AutomaticExecute.log.info(am.getPathName()+": ONCE_A_DAY at "
+					+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
 				sendToPlayersRandom(am);
@@ -308,7 +335,8 @@ public class BackgroundTaskNew
 		}
 		if(check == true)
 		{
-			document(am.getPathName()+": ON_TIMES at "+hour+":"+min+":"+sec);
+			AutomaticExecute.log.info(am.getPathName()+": ON_TIMES at "
+					+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
 				sendToPlayersRandom(am);
@@ -335,7 +363,8 @@ public class BackgroundTaskNew
 				am.getDate().getDayOfMonth() == day &&
 				now >= am.getLastTimeSend())
 		{
-			document(am.getPathName()+": MULTIPLE_ON_THE_DAY at "+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
+			AutomaticExecute.log.info(am.getPathName()+": MULTIPLE_ON_THE_DAY at "
+					+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
 				
@@ -349,7 +378,7 @@ public class BackgroundTaskNew
 		}
 	}
 	
-	public void doINTERVAL(AutoMessage am, int day, int month, int year, int hour, int min, int sec)
+	private void doINTERVAL(AutoMessage am, int day, int month, int year, int hour, int min, int sec)
 	{
 		long now = System.currentTimeMillis();
 		if(am == null)
@@ -358,7 +387,8 @@ public class BackgroundTaskNew
 		}
 		if(now >= am.getLastTimeSend())
 		{
-			document(am.getPathName()+": INTERVAL at "+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
+			AutomaticExecute.log.info(am.getPathName()+": INTERVAL at "
+					+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
 				sendToPlayersRandom(am);
@@ -377,27 +407,29 @@ public class BackgroundTaskNew
 		{
 			return;
 		}
-		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
+		for(Player all : plugin.getServer().getOnlinePlayers())
 		{
 			if(am.getPermission() != null)
 			{
+				sendTitle(true, am, all);
+				playSound(true, am, all);
 				if(all.hasPermission(am.getPermission()))
 				{
-					sendTitle(true, am, all);
 					for(TextComponent tc : am.getMessage())
 					{
-						all.sendMessage(tc);
+						all.spigot().sendMessage(tc);
 					}
-					playerCommand(true, am, all);
+					playerCommandWithPermission(am, all);
 				}
 			} else
 			{
 				sendTitle(false, am, all);
+				playSound(false, am, all);
 				for(TextComponent tc : am.getMessage())
 				{
-					all.sendMessage(tc);
+					all.spigot().sendMessage(tc);
 				}
-				playerCommand(false, am, all);
+				playerCommand(am, all);
 			}
 		}
 		consoleCommand(am);
@@ -412,97 +444,119 @@ public class BackgroundTaskNew
 		int size = am.getRandomlist().size()-1;
 		Random r = new Random();
 		int value = r.nextInt(size);
-		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
+		for(Player all : plugin.getServer().getOnlinePlayers())
 		{
 			if(am.getPermission() != null)
 			{
 				if(all.hasPermission(am.getPermission()))
 				{
 					sendTitle(true, am, all);
+					playSound(true, am, all);
 					List<TextComponent> list = am.getRandomlist().get(value);
 					for(TextComponent tc : list)
 					{
-						all.sendMessage(tc);											
+						all.spigot().sendMessage(tc);											
 					}
-					playerCommand(true, am, all);
+					playerCommandWithPermission(am, all);
 				}
 			} else
 			{
 				sendTitle(false, am, all);
+				playSound(false, am, all);
 				List<TextComponent> list = am.getRandomlist().get(value);
 				for(TextComponent tc : list)
 				{
-					all.sendMessage(tc);											
+					all.spigot().sendMessage(tc);											
 				}
-				playerCommand(false, am, all);
+				playerCommand(am, all);
 			}
 		}
 		consoleCommand(am);
+	}
+	
+	private void playSound(boolean permission, AutoMessage am, Player player)
+	{
+		if(permission)
+		{
+			if(am.getSoundsWithPermission().isEmpty())
+			{
+				return;
+			}
+			for(Sound sound : am.getSoundsWithPermission())
+			{
+				player.playSound(player.getLocation(), sound, 0.6f, 0.6f);
+			}
+		} else
+		{
+			if(am.getSounds().isEmpty())
+			{
+				return;
+			}
+			for(Sound sound : am.getSounds())
+			{
+				player.playSound(player.getLocation(), sound, 0.6f, 0.6f);
+			}
+		}
+		return;
 	}
 	
 	private void consoleCommand(AutoMessage am)
 	{
 		for(String cmd : am.getConsoleCommand())
 		{
-			BungeeCord.getInstance().getPluginManager().dispatchCommand(plugin.getProxy().getConsole(), cmd);
+			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
 		}
 		return;
 	}
 	
-	private void consoleCommandPerPlayer(AutoMessage am, ProxiedPlayer player)
+	private void playerCommand(AutoMessage am, Player player)
 	{
-		for(String cmd : am.getConsoleCommand())
+		if(am.isDoPlayerCommandWithPermission() == false)
 		{
-			BungeeCord.getInstance().getPluginManager().dispatchCommand(plugin.getProxy().getConsole(), cmd.replace("%player%", player.getName()));
-		}
-		return;
-	}
-	
-	private void playerCommand(boolean permission, AutoMessage am, ProxiedPlayer player)
-	{
-		if(permission)
-		{
-			if(am.isDoPlayerCommandWithPermission() == true)
+			for(String cmd : am.getPlayerCommand())
 			{
-				for(String cmd : am.getPlayerCommand())
-				{
-					BungeeCord.getInstance().getPluginManager().dispatchCommand(player, cmd);
-				}
-			}
-		} else
-		{
-			if(am.isDoPlayerCommandWithPermission() == false)
-			{
-				for(String cmd : am.getPlayerCommand())
-				{
-					BungeeCord.getInstance().getPluginManager().dispatchCommand(player, cmd);
-				}
+				Bukkit.dispatchCommand(player, cmd);
 			}
 		}
 	}
 	
-	private void sendTitle(boolean permission, AutoMessage am, ProxiedPlayer player)
+	private void playerCommandWithPermission(AutoMessage am, Player player)
+	{
+		if(am.isDoPlayerCommandWithPermission() == true)
+		{
+			for(String cmd : am.getPlayerCommand())
+			{
+				Bukkit.dispatchCommand(player, cmd);
+			}
+		}
+	}
+	
+	private void sendTitle(boolean permission, AutoMessage am, Player player)
 	{
 		if(permission)
 		{
 			if(am.getTitleWithPermission()!=null)
 			{
-				player.sendTitle(am.getTitleWithPermission());
+				Title t = am.getTitleWithPermission();
+				player.sendTitle(
+						t.getTitle(),
+						t.getSubTitle(),
+						t.getFadeIn(),
+						t.getStay(),
+						t.getFadeOut());
 			}
 		} else
 		{
 			if(am.getTitle() != null)
 			{
-				player.sendTitle(am.getTitle());
+				Title t = am.getTitle();
+				player.sendTitle(
+						t.getTitle(),
+						t.getSubTitle(),
+						t.getFadeIn(),
+						t.getStay(),
+						t.getFadeOut());
 			}
-		}
-	}
-	
-	private void document(String s)
-	{
-		if(plugin.getYamlHandler().getConfig().getBoolean("DocumentExecuteInLog"))
-		{
-			AutomaticExecute.log.info(s);
 		}
 	}
 }

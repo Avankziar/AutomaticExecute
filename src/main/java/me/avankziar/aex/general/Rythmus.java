@@ -1,4 +1,4 @@
-package main.java.me.avankziar.autoex.general;
+package main.java.me.avankziar.aex.general;
 
 public enum Rythmus
 {

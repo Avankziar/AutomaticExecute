@@ -1,4 +1,4 @@
-package main.java.me.avankziar.autoex.spigot.assistance;
+package main.java.me.avankziar.aex.spigot.assistance;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import main.java.me.avankziar.autoex.spigot.AutomaticExecute;
+import main.java.me.avankziar.aex.spigot.AutomaticExecute;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;

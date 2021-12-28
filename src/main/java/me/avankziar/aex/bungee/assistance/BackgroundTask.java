@@ -1,4 +1,5 @@
-package main.java.me.avankziar.autoex.spigot.assistance;
+package main.java.me.avankziar.aex.bungee.assistance;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -6,23 +7,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import main.java.me.avankziar.autoex.general.Rythmus;
-import main.java.me.avankziar.autoex.spigot.AutomaticExecute;
-import main.java.me.avankziar.autoex.spigot.database.YamlHandler;
-import main.java.me.avankziar.autoex.spigot.object.AutoMessage;
-import main.java.me.avankziar.autoex.spigot.object.Title;
+import main.java.me.avankziar.aex.bungee.AutomaticExecute;
+import main.java.me.avankziar.aex.bungee.database.YamlHandler;
+import main.java.me.avankziar.aex.bungee.object.AutoMessage;
+import main.java.me.avankziar.aex.general.Rythmus;
+import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.Title;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.scheduler.ScheduledTask;
+import net.md_5.bungee.config.Configuration;
 
 public class BackgroundTask
 {
 	private AutomaticExecute plugin;
+	private ScheduledTask task;
 	public static List<AutoMessage> AutoMessageList = new ArrayList<AutoMessage>();
 	
 	public BackgroundTask(AutomaticExecute plugin)
@@ -30,7 +32,6 @@ public class BackgroundTask
 		this.plugin = plugin;
 		loadBackgroundTask();
 		runTask();
-		
 	}
 	
 	public boolean loadBackgroundTask()
@@ -46,17 +47,17 @@ public class BackgroundTask
 			AutoMessageList.clear();
 		}
 		YamlHandler yh = plugin.getYamlHandler();
-		YamlConfiguration auto = yh.getAutoEx();
+		Configuration auto = yh.getAutoEx();
 		String sepb = yh.getConfig().getString("Seperator.BetweenFunction", "~");
-		for(String path : yh.getAutoEx().getKeys(false))
+		for(String path : yh.getAutoEx().getKeys())
 		{
 			AutomaticExecute.log.info("Loading Message: "+path);
 			if(auto.getString(path+".Rythmus") == null) continue;
 			Rythmus rythmus = Rythmus.valueOf(auto.getString(path+".Rythmus", "ONCE"));
 			String permission = null;
-			if(auto.getString(path+".Permission") != null) permission = auto.getString(path+".Permission");
+			if(auto.getString(path+".Permission", null) != null) permission = auto.getString(path+".Permission");
 			LocalDate date = null;
-			if(auto.getString(path+".SendingDate") != null)
+			if(auto.getString(path+".SendingDate", null) != null)
 			{
 				 date = LocalDate.parse((CharSequence)auto.getString(path+".SendingDate"),
 							DateTimeFormatter.ofPattern("dd.MM.yyyy"));
@@ -67,7 +68,7 @@ public class BackgroundTask
 			LocalTime time = null;
 			long interval = 0;
 			long lasttimesend = System.currentTimeMillis();
-			if(auto.get(path+".SendingTime") != null)
+			if(auto.getString(path+".SendingTime", null) != null)
 			{
 				if(auto.getString(path+".SendingTime").split(":").length==3)
 				{
@@ -84,7 +85,7 @@ public class BackgroundTask
 				lasttimesend += interval;
 			}
 			List<LocalTime> timelist = new ArrayList<>();
-			if(auto.getStringList(path+".SendingTimes") != null)
+			if(auto.get(path+".SendingTimes", null) != null)
 			{
 				for(String tl : auto.getStringList(path+".SendingTimes"))
 				{
@@ -93,7 +94,7 @@ public class BackgroundTask
 				}
 			}
 			boolean isRandom = false;
-			if(auto.get(path+".IsRandom")!=null)
+			if(auto.get(path+".IsRandom", null)!=null)
 			{
 				isRandom = auto.getBoolean(path+".IsRandom");
 			}
@@ -102,9 +103,9 @@ public class BackgroundTask
 			{
 				for(String otherpath : auto.getStringList(path+".RandomMessage"))
 				{
-					if(auto.getString(otherpath)!=null)
+					if(auto.getString(otherpath, null) != null)
 					{
-						if(auto.getStringList(otherpath)!=null)
+						if(auto.getStringList(otherpath) != null)
 						{
 							List<TextComponent> rm = new ArrayList<TextComponent>();
 							for(String message : auto.getStringList(otherpath))
@@ -124,90 +125,64 @@ public class BackgroundTask
 			List<String> consoleCommand = new ArrayList<String>();
 			boolean doPlayerCommandWithPermission = false;
 			List<String> playerCommand = new ArrayList<String>();
-			if(auto.get(path+".DoConsoleCommand") != null)
+			if(auto.get(path+".ConsoleCommand", null) != null)
 			{
-				if(auto.getStringList(path+".ConsoleCommand") != null)
-				{
-					consoleCommand = auto.getStringList(path+".ConsoleCommand");
-				}
+				consoleCommand = auto.getStringList(path+".ConsoleCommand");
 			}
-			if(auto.get(path+".DoPlayerCommand") != null)
+			if(auto.get(path+".DoPlayerCommand", null) != null)
 			{
-				if(auto.getStringList(path+".PlayerCommand") != null)
+				if(auto.get(path+".PlayerCommand", null) != null)
 				{
 					playerCommand = auto.getStringList(path+".PlayerCommand");
 				}
 			}
 			if(auto.get(path+".DoPlayerCommandWithPermission") != null)
 			{
-				doPlayerCommandWithPermission = auto.getBoolean(path+".DoPlayerCommandWithPermission");
-				if(auto.getStringList(path+".PlayerCommand") != null)
+				doPlayerCommandWithPermission = auto.getBoolean(path+".DoPlayerCommandWithPermission", false);
+				if(auto.get(path+".PlayerCommand", null) != null)
 				{
 					playerCommand = auto.getStringList(path+".PlayerCommand");
 				}
 			}
 			Title title = null;
-			if(auto.get(path+".TitleMessage") != null)
+			if(auto.getString(path+".TitleMessage", null) != null)
 			{
 				String[] ti = auto.getString(path+".TitleMessage").split(sepb);
 				if(ti.length == 5)
 				{
-					title = new Title(ChatApi.tl(ti[0]),
-							ChatApi.tl(ti[1]),
-							Integer.parseInt(ti[2]),
-							Integer.parseInt(ti[3]),
-							Integer.parseInt(ti[4]));
+					title = ProxyServer.getInstance().createTitle();
+					title.title(ChatApi.tctl(ti[0]));
+					title.subTitle(ChatApi.tctl(ti[1]));
+					title.fadeIn(Integer.parseInt(ti[2]));
+					title.stay(Integer.parseInt(ti[3]));
+					title.fadeOut(Integer.parseInt(ti[4]));
 				}
 			}
 			Title titleWithPermission = null;
-			if(auto.get(path+".TitleMessageWithPermission") != null)
+			if(auto.getString(path+".TitleMessageWithPermission", null) != null)
 			{
 				String[] ti = auto.getString(path+".TitleMessageWithPermission").split(sepb);
 				if(ti.length == 5)
 				{
-					titleWithPermission = new Title(
-							ChatApi.tl(ti[0]),
-							ChatApi.tl(ti[1]),
-							Integer.parseInt(ti[2]),
-							Integer.parseInt(ti[3]),
-							Integer.parseInt(ti[4]));
-				}
-			}
-			ArrayList<Sound> sounds = new ArrayList<Sound>();
-			if(auto.get(path+".Sounds") != null)
-			{
-				for(String s : auto.getStringList(path+".Sounds"))
-				{
-					try
-					{
-						Sound sound = Sound.valueOf(s);
-						sounds.add(sound);
-					} catch(IllegalArgumentException e){}
-				}
-			}
-			ArrayList<Sound> soundsWithPermission = new ArrayList<Sound>();
-			if(auto.get(path+".SoundsWithPermission") != null)
-			{
-				for(String s : auto.getStringList(path+".SoundsWithPermission"))
-				{
-					try
-					{
-						Sound sound = Sound.valueOf(s);
-						sounds.add(sound);
-					} catch(IllegalArgumentException e){}
+					titleWithPermission = ProxyServer.getInstance().createTitle();
+					titleWithPermission.title(ChatApi.tctl(ti[0]));
+					titleWithPermission.subTitle(ChatApi.tctl(ti[1]));
+					titleWithPermission.fadeIn(Integer.parseInt(ti[2]));
+					titleWithPermission.stay(Integer.parseInt(ti[3]));
+					titleWithPermission.fadeOut(Integer.parseInt(ti[4]));
 				}
 			}
 			AutoMessage am = new AutoMessage(path, rythmus, permission,
 					isRandom, RandomMessage, Message, title, titleWithPermission,
 					consoleCommand, doPlayerCommandWithPermission, playerCommand,
-					date, time, timelist, interval, lasttimesend, sounds, soundsWithPermission);
+					date, time, timelist, interval, lasttimesend);
 			AutoMessageList.add(am);
 		}
 	}
 	
 	public void runTask()
 	{
-		new BukkitRunnable()
+		task = plugin.getProxy().getScheduler().schedule(plugin, new Runnable()
 		{
 			
 			@Override
@@ -223,29 +198,29 @@ public class BackgroundTask
 							|| now.getMinute() == 55))
 				{
 					autoSendMessage(now);
-					cancel();
+					plugin.getProxy().getScheduler().cancel(task);
 				}
 			}
-		}.runTaskTimer(plugin, 20*5L, 20L);
+		}, 5L, 1L, TimeUnit.SECONDS);
 	}
 	
 	public void autoSendMessage(LocalDateTime now)
 	{
 		AutomaticExecute.log.info("AutomaticExecute starts Scheduler at "+Utility.serialisedDateTime(now));
-		new BukkitRunnable()
+		plugin.getProxy().getScheduler().schedule(plugin, new Runnable() 
 		{
 			
 			@Override
-			public void run()
+			public void run() 
 			{
+				LocalTime lt = LocalTime.now();
+				int min = lt.getMinute();
+				int sec = lt.getSecond();
+				int hour = lt.getHour();
 				LocalDate ld = LocalDate.now();
 				int day = ld.getDayOfMonth();
 				int month = ld.getMonthValue();
 				int year = ld.getYear();
-				LocalTime lt = LocalTime.now();
-				int hour = lt.getHour();
-				int min = lt.getMinute();
-				int sec = lt.getSecond();
 				for(AutoMessage am : AutoMessageList)
 				{
 					if(am.getRythmus() == Rythmus.ONCE)
@@ -266,7 +241,7 @@ public class BackgroundTask
 					}
 				}
 			}
-		}.runTaskTimer(plugin, 0L, 1*20L);
+		}, 0L, 1L, TimeUnit.SECONDS);	
 	}
 	
 	private void doONCE(AutoMessage am, int day, int month, int year, int hour, int min, int sec)
@@ -378,7 +353,7 @@ public class BackgroundTask
 		}
 	}
 	
-	private void doINTERVAL(AutoMessage am, int day, int month, int year, int hour, int min, int sec)
+	public void doINTERVAL(AutoMessage am, int day, int month, int year, int hour, int min, int sec)
 	{
 		long now = System.currentTimeMillis();
 		if(am == null)
@@ -407,29 +382,27 @@ public class BackgroundTask
 		{
 			return;
 		}
-		for(Player all : plugin.getServer().getOnlinePlayers())
+		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
 		{
 			if(am.getPermission() != null)
 			{
-				sendTitle(true, am, all);
-				playSound(true, am, all);
 				if(all.hasPermission(am.getPermission()))
 				{
+					sendTitle(true, am, all);
 					for(TextComponent tc : am.getMessage())
 					{
-						all.spigot().sendMessage(tc);
+						all.sendMessage(tc);
 					}
-					playerCommandWithPermission(am, all);
+					playerCommand(true, am, all);
 				}
 			} else
 			{
 				sendTitle(false, am, all);
-				playSound(false, am, all);
 				for(TextComponent tc : am.getMessage())
 				{
-					all.spigot().sendMessage(tc);
+					all.sendMessage(tc);
 				}
-				playerCommand(am, all);
+				playerCommand(false, am, all);
 			}
 		}
 		consoleCommand(am);
@@ -444,118 +417,79 @@ public class BackgroundTask
 		int size = am.getRandomlist().size()-1;
 		Random r = new Random();
 		int value = r.nextInt(size);
-		for(Player all : plugin.getServer().getOnlinePlayers())
+		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
 		{
 			if(am.getPermission() != null)
 			{
 				if(all.hasPermission(am.getPermission()))
 				{
 					sendTitle(true, am, all);
-					playSound(true, am, all);
 					List<TextComponent> list = am.getRandomlist().get(value);
 					for(TextComponent tc : list)
 					{
-						all.spigot().sendMessage(tc);											
+						all.sendMessage(tc);											
 					}
-					playerCommandWithPermission(am, all);
+					playerCommand(true, am, all);
 				}
 			} else
 			{
 				sendTitle(false, am, all);
-				playSound(false, am, all);
 				List<TextComponent> list = am.getRandomlist().get(value);
 				for(TextComponent tc : list)
 				{
-					all.spigot().sendMessage(tc);											
+					all.sendMessage(tc);											
 				}
-				playerCommand(am, all);
+				playerCommand(false, am, all);
 			}
 		}
 		consoleCommand(am);
-	}
-	
-	private void playSound(boolean permission, AutoMessage am, Player player)
-	{
-		if(permission)
-		{
-			if(am.getSoundsWithPermission().isEmpty())
-			{
-				return;
-			}
-			for(Sound sound : am.getSoundsWithPermission())
-			{
-				player.playSound(player.getLocation(), sound, 0.6f, 0.6f);
-			}
-		} else
-		{
-			if(am.getSounds().isEmpty())
-			{
-				return;
-			}
-			for(Sound sound : am.getSounds())
-			{
-				player.playSound(player.getLocation(), sound, 0.6f, 0.6f);
-			}
-		}
-		return;
 	}
 	
 	private void consoleCommand(AutoMessage am)
 	{
 		for(String cmd : am.getConsoleCommand())
 		{
-			Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+			BungeeCord.getInstance().getPluginManager().dispatchCommand(plugin.getProxy().getConsole(), cmd);
 		}
 		return;
 	}
 	
-	private void playerCommand(AutoMessage am, Player player)
+	private void playerCommand(boolean permission, AutoMessage am, ProxiedPlayer player)
 	{
-		if(am.isDoPlayerCommandWithPermission() == false)
+		if(permission)
 		{
-			for(String cmd : am.getPlayerCommand())
+			if(am.isDoPlayerCommandWithPermission() == true)
 			{
-				Bukkit.dispatchCommand(player, cmd);
+				for(String cmd : am.getPlayerCommand())
+				{
+					BungeeCord.getInstance().getPluginManager().dispatchCommand(player, cmd);
+				}
+			}
+		} else
+		{
+			if(am.isDoPlayerCommandWithPermission() == false)
+			{
+				for(String cmd : am.getPlayerCommand())
+				{
+					BungeeCord.getInstance().getPluginManager().dispatchCommand(player, cmd);
+				}
 			}
 		}
 	}
 	
-	private void playerCommandWithPermission(AutoMessage am, Player player)
-	{
-		if(am.isDoPlayerCommandWithPermission() == true)
-		{
-			for(String cmd : am.getPlayerCommand())
-			{
-				Bukkit.dispatchCommand(player, cmd);
-			}
-		}
-	}
-	
-	private void sendTitle(boolean permission, AutoMessage am, Player player)
+	private void sendTitle(boolean permission, AutoMessage am, ProxiedPlayer player)
 	{
 		if(permission)
 		{
 			if(am.getTitleWithPermission()!=null)
 			{
-				Title t = am.getTitleWithPermission();
-				player.sendTitle(
-						t.getTitle(),
-						t.getSubTitle(),
-						t.getFadeIn(),
-						t.getStay(),
-						t.getFadeOut());
+				player.sendTitle(am.getTitleWithPermission());
 			}
 		} else
 		{
 			if(am.getTitle() != null)
 			{
-				Title t = am.getTitle();
-				player.sendTitle(
-						t.getTitle(),
-						t.getSubTitle(),
-						t.getFadeIn(),
-						t.getStay(),
-						t.getFadeOut());
+				player.sendTitle(am.getTitle());
 			}
 		}
 	}

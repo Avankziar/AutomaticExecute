@@ -1,4 +1,4 @@
-package main.java.me.avankziar.autoex.spigot.database;
+package main.java.me.avankziar.aex.spigot.database;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,10 +12,10 @@ import java.util.List;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import main.java.me.avankziar.autoex.general.Language;
-import main.java.me.avankziar.autoex.general.YamlManager;
-import main.java.me.avankziar.autoex.general.Language.ISO639_2B;
-import main.java.me.avankziar.autoex.spigot.AutomaticExecute;
+import main.java.me.avankziar.aex.general.Language;
+import main.java.me.avankziar.aex.general.YamlManager;
+import main.java.me.avankziar.aex.general.Language.ISO639_2B;
+import main.java.me.avankziar.aex.spigot.AutomaticExecute;
 
 public class YamlHandler
 {
@@ -30,8 +30,8 @@ public class YamlHandler
 	private YamlConfiguration aum = new YamlConfiguration();
 	
 	private String languages;
-	private File language = null;
-	private YamlConfiguration lang = new YamlConfiguration();
+	/*private File language = null;
+	private YamlConfiguration lang = new YamlConfiguration();*/
 	
 	public YamlHandler(AutomaticExecute plugin) throws IOException 
 	{
@@ -58,10 +58,10 @@ public class YamlHandler
 		return cfg;
 	}
 	
-	public YamlConfiguration getLang()
+	/*public YamlConfiguration getLang()
 	{
 		return lang;
-	}
+	}*/
 	
 	public YamlConfiguration getAutoEx()
 	{
@@ -171,14 +171,14 @@ public class YamlHandler
 		//Setzen der Sprache
 		plugin.getYamlManager().setLanguageType(languageType);
 		
-		if(!mkdirLanguage())
+		/*if(!mkdirLanguage())
 		{
 			return false;
-		}
+		}*/
 		return true;
 	}
 	
-	private boolean mkdirLanguage() throws IOException
+	/*private boolean mkdirLanguage() throws IOException
 	{
 		String languageString = plugin.getYamlManager().getLanguageType().toString().toLowerCase();
 		File directory = new File(plugin.getDataFolder()+"/Languages/");
@@ -207,7 +207,7 @@ public class YamlHandler
 		//Niederschreiben aller Werte in die Datei
 		writeFile(language, lang, plugin.getYamlManager().getLanguageKey());
 		return true;
-	}
+	}*/
 	
 	private YamlConfiguration loadYamlTask(File file, YamlConfiguration yaml)
 	{

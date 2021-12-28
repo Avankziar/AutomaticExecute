@@ -1,4 +1,4 @@
-package main.java.me.avankziar.autoex.bungee.database;
+package main.java.me.avankziar.aex.bungee.database;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,10 +9,10 @@ import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import main.java.me.avankziar.autoex.bungee.AutomaticExecute;
-import main.java.me.avankziar.autoex.general.Language;
-import main.java.me.avankziar.autoex.general.YamlManager;
-import main.java.me.avankziar.autoex.general.Language.ISO639_2B;
+import main.java.me.avankziar.aex.bungee.AutomaticExecute;
+import main.java.me.avankziar.aex.general.Language;
+import main.java.me.avankziar.aex.general.YamlManager;
+import main.java.me.avankziar.aex.general.Language.ISO639_2B;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
@@ -22,13 +22,13 @@ public class YamlHandler
 	private AutomaticExecute plugin;
 	private File config = null;
 	private Configuration cfg = new Configuration();
-	private File commands = null;
-	private Configuration com = new Configuration();
+	/*private File commands = null;
+	private Configuration com = new Configuration();*/
 	private File automatic = null;
 	private Configuration aum = new Configuration();
 
-	private File language = null;
-	private Configuration lang = new Configuration();
+	/*private File language = null;
+	private Configuration lang = new Configuration();*/
 	private String languages;
 	
 	public YamlHandler(AutomaticExecute plugin)
@@ -56,7 +56,7 @@ public class YamlHandler
 		return cfg;
 	}
 	
-	public Configuration getCommands()
+	/*public Configuration getCommands()
 	{
 		return com;
 	}
@@ -64,7 +64,7 @@ public class YamlHandler
 	public Configuration getLang()
 	{
 		return lang;
-	}
+	}*/
 	
 	public Configuration getAutoEx()
 	{
@@ -96,7 +96,7 @@ public class YamlHandler
 		
 		languages = cfg.getString("Language", "ENG").toUpperCase();
 		
-		commands = new File(plugin.getDataFolder(), "commands.yml");
+		/*commands = new File(plugin.getDataFolder(), "commands.yml");
 		if(!commands.exists()) 
 		{
 			AutomaticExecute.log.info("Create commands.yml...");
@@ -110,9 +110,9 @@ public class YamlHandler
 	         }
 		}
 		com = loadYamlTask(commands, com);
-		writeFile(commands, com, plugin.getYamlManager().getCommandsKey());
+		writeFile(commands, com, plugin.getYamlManager().getCommandsKey());*/
 		
-		automatic = new File(plugin.getDataFolder(), "chattitle.yml");
+		automatic = new File(plugin.getDataFolder(), "automaticexecute.yml");
 		if(!automatic.exists()) 
 		{
 			AutomaticExecute.log.info("Create automaticexecute.yml...");
@@ -143,14 +143,14 @@ public class YamlHandler
 			}
 		}
 		plugin.getYamlManager().setLanguageType(languageType);
-		if(!mkdirLanguage())
+		/*if(!mkdirLanguage())
 		{
 			return false;
-		}
+		}*/
 		return true;
 	}
 	
-	private boolean mkdirLanguage()
+	/*private boolean mkdirLanguage()
 	{
 		String languageString = plugin.getYamlManager().getLanguageType().toString().toLowerCase();
 		File directory = new File(plugin.getDataFolder()+"/Languages/");
@@ -174,7 +174,7 @@ public class YamlHandler
 		lang = loadYamlTask(language, lang);
 		writeFile(language, lang, plugin.getYamlManager().getLanguageKey());
 		return true;
-	}
+	}*/
 	
 	private Configuration loadYamlTask(File file, Configuration yaml)
 	{

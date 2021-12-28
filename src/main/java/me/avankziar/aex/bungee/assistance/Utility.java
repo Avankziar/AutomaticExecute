@@ -1,43 +1,22 @@
-package main.java.me.avankziar.autoex.spigot.assistance;
+package main.java.me.avankziar.aex.bungee.assistance;
 
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import main.java.me.avankziar.autoex.spigot.AutomaticExecute;
+import main.java.me.avankziar.aex.bungee.AutomaticExecute;
 
 public class Utility
-{	
+{
+	
+	/*final public static String 
+	PERMBYPASSCOLOR = "scc.channels.bypass.color",
+	PERMBYPASSCOMMAND = "scc.channels.bypass.command";*/
+	
 	public Utility(AutomaticExecute plugin)
 	{
-		loadUtility();
-	}
-	
-	public boolean loadUtility()
-	{
-		return true;
-	}
-	
-	public boolean existMethod(Class<?> externclass, String method)
-	{
-	    try 
-	    {
-	    	Method[] mtds = externclass.getMethods();
-	    	for(Method methods : mtds)
-	    	{
-	    		if(methods.getName().equalsIgnoreCase(method))
-	    		{
-	    	    	//SimpleChatChannels.log.info("Method "+method+" in Class "+externclass.getName()+" loaded!");
-	    	    	return true;
-	    		}
-	    	}
-	    	return false;
-	    } catch (Exception e) 
-	    {
-	    	return false;
-	    }
+		
 	}
 	
 	public static LocalDateTime deserialisedDateTime(String datetime)

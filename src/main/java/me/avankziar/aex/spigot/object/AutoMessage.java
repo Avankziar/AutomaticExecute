@@ -1,11 +1,13 @@
-package main.java.me.avankziar.autoex.bungee.object;
+package main.java.me.avankziar.aex.spigot.object;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
-import main.java.me.avankziar.autoex.general.Rythmus;
-import net.md_5.bungee.api.Title;
+import org.bukkit.Sound;
+
+import main.java.me.avankziar.aex.general.Rythmus;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class AutoMessage
@@ -28,13 +30,15 @@ public class AutoMessage
 	
 	private long interval; //For interval
 	private long lastTimeSend;
+	private ArrayList<Sound> sounds;
+	private ArrayList<Sound> soundsWithPermission;
 
 	public AutoMessage(String pathName, Rythmus rythmus, String permission, 
 			boolean random, List<List<TextComponent>> randomlist, List<TextComponent> message,
-			Title title, Title titleWithPermission,
-			List<String> consoleCommand,
+			Title title, Title titleWithPermission, List<String> consoleCommand,
 			boolean doPlayerCommandWithPermission, List<String> playerCommand,
-			LocalDate date, LocalTime time, List<LocalTime> timeList, long interval, long lastTimeSend)
+			LocalDate date, LocalTime time, List<LocalTime> timeList, long interval, long lastTimeSend,
+			ArrayList<Sound> sounds, ArrayList<Sound> soundsWithPermission)
 	{
 		setPathName(pathName);
 		setRythmus(rythmus);
@@ -50,6 +54,8 @@ public class AutoMessage
 		setTimeList(timeList);
 		setInterval(interval);
 		setLastTimeSend(lastTimeSend);
+		setSounds(sounds);
+		setSoundsWithPermission(soundsWithPermission);
 	}
 	
 	public String getPathName()
@@ -210,5 +216,25 @@ public class AutoMessage
 	public void setTitleWithPermission(Title titleWithPermission)
 	{
 		this.titleWithPermission = titleWithPermission;
+	}
+
+	public ArrayList<Sound> getSounds()
+	{
+		return sounds;
+	}
+
+	public void setSounds(ArrayList<Sound> sounds)
+	{
+		this.sounds = sounds;
+	}
+
+	public ArrayList<Sound> getSoundsWithPermission()
+	{
+		return soundsWithPermission;
+	}
+
+	public void setSoundsWithPermission(ArrayList<Sound> soundsWithPermission)
+	{
+		this.soundsWithPermission = soundsWithPermission;
 	}
 }
