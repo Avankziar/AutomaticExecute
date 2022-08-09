@@ -2,6 +2,9 @@ Future
 - Nachrichten die möglichkeit bieten, diese nicht einzublenden. Dafür in der jeweiligen Config muss die Nachricht dafür extra einen true boolean
   bekommen. erst dann kann der spieler diese nachricht extern abschalten.
 
+Build 3-1-1
+- Softdepend RootAdministration
+
 Build 3
 - Ändern der pfade, sodass für die Verschiedenen funktionen, bspw. ONCE ein pfad in der yml existeriert der Once heißt und 
   dort alle Info zu den Zeiten drin sind. aka dd.MM.YYYY HH:mm:ss etc. Bei Mehrfach anzeigen spilten in Datum und 
