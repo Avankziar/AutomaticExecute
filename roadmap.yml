@@ -2,6 +2,10 @@ Future
 - Nachrichten die möglichkeit bieten, diese nicht einzublenden. Dafür in der jeweiligen Config muss die Nachricht dafür extra einen true boolean
   bekommen. erst dann kann der spieler diese nachricht extern abschalten.
 
+Build 3-3-0
+- MC 1.19.2 support
+- IFH Administration implementiert
+
 Build 3-1-1
 - Softdepend RootAdministration
 

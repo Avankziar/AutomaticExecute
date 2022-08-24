@@ -94,7 +94,9 @@ public class YamlHandler
 		cfg = loadYamlTask(config, cfg);
 		writeFile(config, cfg, plugin.getYamlManager().getConfigKey());
 		
-		languages = cfg.getString("Language", "ENG").toUpperCase();
+		languages = plugin.getAdministration() == null 
+				? cfg.getString("Language", "ENG").toUpperCase() 
+				: plugin.getAdministration().getLanguage();
 		
 		/*commands = new File(plugin.getDataFolder(), "commands.yml");
 		if(!commands.exists()) 

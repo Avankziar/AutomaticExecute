@@ -2,5 +2,5 @@ name: AutomaticExecute
 main: main.java.me.avankziar.aex.spigot.AutomaticExecute
 version: 3
 author: Avankziar
-api-version: 1.18
+api-version: 1.19
 description: A Auto Execute System

@@ -5,12 +5,15 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import main.java.me.avankziar.aex.general.YamlManager;
 import main.java.me.avankziar.aex.spigot.assistance.BackgroundTask;
 import main.java.me.avankziar.aex.spigot.assistance.Utility;
 import main.java.me.avankziar.aex.spigot.database.YamlHandler;
+import main.java.me.avankziar.ifh.spigot.administration.Administration;
 
 public class AutomaticExecute extends JavaPlugin
 {
@@ -22,6 +25,8 @@ public class AutomaticExecute extends JavaPlugin
 	private static BackgroundTask backgroundTask;
 	private static Utility utility;
 	
+	private static Administration administrationConsumer;
+	
 	public void onEnable()
 	{
 		plugin = this;
@@ -32,6 +37,9 @@ public class AutomaticExecute extends JavaPlugin
 		log.info(" ██╔══██║██╔══╝   ██╔██╗  | Depend Plugins: "+plugin.getDescription().getDepend().toString());
 		log.info(" ██║  ██║███████╗██╔╝ ██╗ | SoftDepend Plugins: "+plugin.getDescription().getSoftDepend().toString());
 		log.info(" ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ | LoadBefore: "+plugin.getDescription().getLoadBefore().toString());
+		
+		setupIFHAdministration();
+		
 		try
 		{
 			yamlHandler = new YamlHandler(this);
@@ -91,5 +99,47 @@ public class AutomaticExecute extends JavaPlugin
 	public void ListenerSetup()
 	{
 		//PluginManager pm = getServer().getPluginManager();
+	}
+	
+	private void setupIFHAdministration()
+	{ 
+		if(!plugin.getServer().getPluginManager().isPluginEnabled("InterfaceHub")) 
+	    {
+	    	return;
+	    }
+		new BukkitRunnable()
+        {
+        	int i = 0;
+			@Override
+			public void run()
+			{
+			    if(i == 20)
+			    {
+				cancel();
+				return;
+			    }
+			    try
+			    {
+			    	RegisteredServiceProvider<main.java.me.avankziar.ifh.spigot.administration.Administration> rsp = 
+	                         getServer().getServicesManager().getRegistration(Administration.class);
+				    if (rsp == null) 
+				    {
+				    	i++;
+				        return;
+				    }
+				    administrationConsumer = rsp.getProvider();
+				    log.info(pluginName + " detected InterfaceHub >>> Administration.class is consumed!");
+			    } catch(NoClassDefFoundError e) 
+			    {
+			    	cancel();
+			    }		    
+			    cancel();
+			}
+        }.runTaskTimer(plugin,  0L, 20*2);
+	}
+	
+	public Administration getAdministration()
+	{
+		return administrationConsumer;
 	}
 }

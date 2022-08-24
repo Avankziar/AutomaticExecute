@@ -144,39 +144,38 @@ public class YamlManager
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	public void initConfig() //INFO:Config
 	{
-		Base:
-		{
-			configKeys.put("Language"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					"ENG"}));
-			configKeys.put("DocumentExecuteInLog"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					true}));
-		}
-		Generator:
-		{
-			configKeys.put("Identifier.Click"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					"click"}));
-			configKeys.put("Identifier.Hover"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					"hover"}));
-			configKeys.put("Seperator.BetweenFunction"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					"~"}));
-			configKeys.put("Seperator.WhithinFuction"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					"@"}));
-			configKeys.put("Seperator.Space"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					"+"}));
-			configKeys.put("Seperator.HoverNewLine"
-					, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
-					"~!~"}));
-		}
+		configKeys.put("useIFHAdministration"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				true}));
+		configKeys.put("IFHAdministrationPath"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"aex"}));
+		configKeys.put("Language"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"ENG"}));
+		configKeys.put("DocumentExecuteInLog"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				true}));
+		configKeys.put("Identifier.Click"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"click"}));
+		configKeys.put("Identifier.Hover"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"hover"}));
+		configKeys.put("Seperator.BetweenFunction"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"~"}));
+		configKeys.put("Seperator.WhithinFuction"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"@"}));
+		configKeys.put("Seperator.Space"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"+"}));
+		configKeys.put("Seperator.HoverNewLine"
+				, new Language(new ISO639_2B[] {ISO639_2B.GER}, new Object[] {
+				"~!~"}));
 	}
 	
 	public void initLanguage() //INFO:Languages
