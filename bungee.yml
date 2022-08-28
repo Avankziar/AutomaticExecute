@@ -2,4 +2,4 @@ name: AutomaticExecute
 main: main.java.me.avankziar.aex.bungee.AutomaticExecute
 version: 3
 author: Avankziar
-softDepends: [RootAdministration]
+softDepends: [InterfaceHub,RootAdministration]
