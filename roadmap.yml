@@ -2,6 +2,7 @@ Future
 - Nachrichten die möglichkeit bieten, diese nicht einzublenden. Dafür in der jeweiligen Config muss die Nachricht dafür extra einen true boolean
   bekommen. erst dann kann der spieler diese nachricht extern abschalten.
 - "Von Bis" Methode hinzufügen um Nachrichten an mehreren daten zu verschiedenen Uhrzeiten schicken zu können.
+- Bungeecord Nachrichten pro Server unterscheiden lassen.
 
 Build 3-3-1
 - InterfaceHub als softdepend eingebaut.
