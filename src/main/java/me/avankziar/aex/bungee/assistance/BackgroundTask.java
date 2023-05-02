@@ -94,7 +94,7 @@ public class BackgroundTask
 				}
 			}
 			boolean isRandom = false;
-			if(auto.get(path+".IsRandom", null)!=null)
+			if(auto.get(path+".IsRandom", null) != null)
 			{
 				isRandom = auto.getBoolean(path+".IsRandom");
 			}
@@ -342,7 +342,6 @@ public class BackgroundTask
 					+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
-				
 				sendToPlayersRandom(am);
 				am.setLastTimeSend(now+Utility.timeToLong(am.getTime()));
 			} else
