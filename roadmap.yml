@@ -4,6 +4,9 @@ Future
 - "Von Bis" Methode hinzufügen um Nachrichten an mehreren daten zu verschiedenen Uhrzeiten schicken zu können.
 - Bungeecord Nachrichten pro Server unterscheiden lassen.
 
+Build 3-4-0
+Spigot 1.20.1 support
+
 Build 3-3-1
 - InterfaceHub als softdepend eingebaut.
 
