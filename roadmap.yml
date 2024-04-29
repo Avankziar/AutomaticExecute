@@ -3,6 +3,8 @@ Future
   bekommen. erst dann kann der spieler diese nachricht extern abschalten.
 - "Von Bis" Methode hinzufügen um Nachrichten an mehreren daten zu verschiedenen Uhrzeiten schicken zu können.
 - Bungeecord Nachrichten pro Server unterscheiden lassen.
+- KettenBefehle Mechanik einbauen.
+  Diese sollen in einer seperaten Config angelegt werden. Dort soll bestimmt werden, in welchem Context (Player oder Console) der Befehl ausgeführt werden soll.
 
 Build 3-5-0
 - Spigot 1.20.4 support
