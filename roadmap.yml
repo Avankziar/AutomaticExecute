@@ -7,6 +7,9 @@ Future
 - KettenBefehle Mechanik einbauen.
   Diese sollen in einer seperaten Config angelegt werden. Dort soll bestimmt werden, in welchem Context (Player oder Console) der Befehl ausgeführt werden soll.
 
+Build 3-6-0
+- Java 21 Dependency
+
 Build 3-5-0
 - Spigot 1.20.4 support
 
