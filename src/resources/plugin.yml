@@ -1,0 +1,8 @@
+name: AutomaticExecute
+main: main.java.me.avankziar.aex.spigot.AEX
+version: 3
+author: Avankziar
+api-version: 1.19
+description: A Auto Execute System
+softdepend: [InterfaceHub]
+prefix: AEX

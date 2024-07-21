@@ -9,6 +9,9 @@ Future
 
 Build 3-6-0
 - Java 21 Dependency
+- Spigot 1.21 Support
+- Velocity Support
+- Es muss nun mit Minimessage gearbeitet werden.
 
 Build 3-5-0
 - Spigot 1.20.4 support

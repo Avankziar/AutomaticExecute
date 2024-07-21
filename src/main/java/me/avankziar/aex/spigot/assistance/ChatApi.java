@@ -4,9 +4,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import main.java.me.avankziar.aex.spigot.AutomaticExecute;
+import dev.dejvokep.boostedyaml.YamlDocument;
+import main.java.me.avankziar.aex.spigot.AEX;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -379,9 +378,9 @@ public class ChatApi
 	
 	public static TextComponent generateTextComponent(String message)
 	{
-		AutomaticExecute plugin = AutomaticExecute.plugin;
+		AEX plugin = AEX.plugin;
 		String[] array = message.split(" ");
-		YamlConfiguration cfg = plugin.getYamlHandler().getConfig();
+		YamlDocument cfg = plugin.getYamlHandler().getConfig();
 		String idclick = cfg.getString("Identifier.Click");
 		String idhover = cfg.getString("Identifier.Hover");
 		String sepb = cfg.getString("Seperator.BetweenFunction");

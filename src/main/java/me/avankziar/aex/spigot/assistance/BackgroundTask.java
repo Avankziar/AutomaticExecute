@@ -9,23 +9,23 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import dev.dejvokep.boostedyaml.YamlDocument;
 import main.java.me.avankziar.aex.general.Rythmus;
-import main.java.me.avankziar.aex.spigot.AutomaticExecute;
-import main.java.me.avankziar.aex.spigot.database.YamlHandler;
+import main.java.me.avankziar.aex.general.database.YamlHandler;
+import main.java.me.avankziar.aex.spigot.AEX;
 import main.java.me.avankziar.aex.spigot.object.AutoMessage;
 import main.java.me.avankziar.aex.spigot.object.Title;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class BackgroundTask
 {
-	private AutomaticExecute plugin;
+	private AEX plugin;
 	public static List<AutoMessage> AutoMessageList = new ArrayList<AutoMessage>();
 	
-	public BackgroundTask(AutomaticExecute plugin)
+	public BackgroundTask(AEX plugin)
 	{
 		this.plugin = plugin;
 		loadBackgroundTask();
@@ -46,11 +46,11 @@ public class BackgroundTask
 			AutoMessageList.clear();
 		}
 		YamlHandler yh = plugin.getYamlHandler();
-		YamlConfiguration auto = yh.getAutoEx();
+		YamlDocument auto = yh.getAutoEx();
 		String sepb = yh.getConfig().getString("Seperator.BetweenFunction", "~");
-		for(String path : yh.getAutoEx().getKeys(false))
+		for(String path : yh.getAutoEx().getRoutesAsStrings(false))
 		{
-			AutomaticExecute.log.info("Loading Message: "+path);
+			AEX.logger.info("Loading Message: "+path);
 			if(auto.getString(path+".Rythmus") == null) continue;
 			Rythmus rythmus = Rythmus.valueOf(auto.getString(path+".Rythmus", "ONCE"));
 			String permission = null;
@@ -231,7 +231,7 @@ public class BackgroundTask
 	
 	public void autoSendMessage(LocalDateTime now)
 	{
-		AutomaticExecute.log.info("AutomaticExecute starts Scheduler at "+Utility.serialisedDateTime(now));
+		AEX.logger.info("AutomaticExecute starts Scheduler at "+Utility.serialisedDateTime(now));
 		new BukkitRunnable()
 		{
 			
@@ -282,7 +282,7 @@ public class BackgroundTask
 				am.getTime().getMinute() == min &&
 				am.getTime().getSecond() == sec)
 		{
-			AutomaticExecute.log.info(am.getPathName()+": ONCE at "
+			AEX.logger.info(am.getPathName()+": ONCE at "
 					+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
@@ -304,7 +304,7 @@ public class BackgroundTask
 				am.getTime().getMinute() == min &&
 				am.getTime().getSecond() == sec)
 		{
-			AutomaticExecute.log.info(am.getPathName()+": ONCE_A_DAY at "
+			AEX.logger.info(am.getPathName()+": ONCE_A_DAY at "
 					+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
@@ -335,7 +335,7 @@ public class BackgroundTask
 		}
 		if(check == true)
 		{
-			AutomaticExecute.log.info(am.getPathName()+": ON_TIMES at "
+			AEX.logger.info(am.getPathName()+": ON_TIMES at "
 					+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
@@ -363,7 +363,7 @@ public class BackgroundTask
 				am.getDate().getDayOfMonth() == day &&
 				now >= am.getLastTimeSend())
 		{
-			AutomaticExecute.log.info(am.getPathName()+": MULTIPLE_ON_THE_DAY at "
+			AEX.logger.info(am.getPathName()+": MULTIPLE_ON_THE_DAY at "
 					+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
@@ -387,7 +387,7 @@ public class BackgroundTask
 		}
 		if(now >= am.getLastTimeSend())
 		{
-			AutomaticExecute.log.info(am.getPathName()+": INTERVAL at "
+			AEX.logger.info(am.getPathName()+": INTERVAL at "
 					+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{

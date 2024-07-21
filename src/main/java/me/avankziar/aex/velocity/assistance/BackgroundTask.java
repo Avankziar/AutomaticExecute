@@ -1,4 +1,4 @@
-package main.java.me.avankziar.aex.bungee.assistance;
+package main.java.me.avankziar.aex.velocity.assistance;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,21 +9,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import com.velocitypowered.api.proxy.Player;
+
 import dev.dejvokep.boostedyaml.YamlDocument;
-import main.java.me.avankziar.aex.bungee.AEX;
-import main.java.me.avankziar.aex.bungee.object.AutoMessage;
 import main.java.me.avankziar.aex.general.Rythmus;
 import main.java.me.avankziar.aex.general.database.YamlHandler;
-import net.md_5.bungee.api.ProxyServer;
-import net.md_5.bungee.api.Title;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.scheduler.ScheduledTask;
+import main.java.me.avankziar.aex.velocity.AEX;
+import main.java.me.avankziar.aex.velocity.object.AutoMessage;
 
 public class BackgroundTask
 {
 	private AEX plugin;
-	private ScheduledTask task;
 	public static List<AutoMessage> AutoMessageList = new ArrayList<AutoMessage>();
 	
 	public BackgroundTask(AEX plugin)
@@ -47,10 +43,10 @@ public class BackgroundTask
 		}
 		YamlHandler yh = plugin.getYamlHandler();
 		YamlDocument auto = yh.getAutoEx();
-		String sepb = yh.getConfig().getString("Seperator.BetweenFunction", "~");
+		//String sepb = yh.getConfig().getString("Seperator.BetweenFunction", "~");
 		for(String path : yh.getAutoEx().getRoutesAsStrings(false))
 		{
-			AEX.logger.info("Loading Message: "+path);
+			plugin.getLogger().info("Loading Message: "+path);
 			if(auto.getString(path+".Rythmus") == null) continue;
 			Rythmus rythmus = Rythmus.valueOf(auto.getString(path+".Rythmus", "ONCE"));
 			String permission = null;
@@ -97,7 +93,7 @@ public class BackgroundTask
 			{
 				isRandom = auto.getBoolean(path+".IsRandom");
 			}
-			List<List<TextComponent>> RandomMessage = new ArrayList<List<TextComponent>>();
+			List<List<String>> RandomMessage = new ArrayList<List<String>>();
 			if(isRandom)
 			{
 				for(String otherpath : auto.getStringList(path+".RandomMessage"))
@@ -106,20 +102,20 @@ public class BackgroundTask
 					{
 						if(auto.getStringList(otherpath) != null)
 						{
-							List<TextComponent> rm = new ArrayList<TextComponent>();
+							List<String> rm = new ArrayList<String>();
 							for(String message : auto.getStringList(otherpath))
 							{
-								rm.add(ChatApi.generateTextComponent(message));
+								rm.add(message);
 							}
 							RandomMessage.add(rm);
 						}
 					}
 				}
 			}
-			List<TextComponent> Message = new ArrayList<TextComponent>();
+			List<String> Message = new ArrayList<String>();
 			for(String message : auto.getStringList(path+".Message"))
 			{
-				Message.add(ChatApi.generateTextComponent(message));
+				Message.add(message);
 			}
 			List<String> consoleCommand = new ArrayList<String>();
 			boolean doPlayerCommandWithPermission = false;
@@ -143,7 +139,7 @@ public class BackgroundTask
 					playerCommand = auto.getStringList(path+".PlayerCommand");
 				}
 			}
-			Title title = null;
+			/*Title title = null;
 			if(auto.getString(path+".TitleMessage", null) != null)
 			{
 				String[] ti = auto.getString(path+".TitleMessage").split(sepb);
@@ -170,9 +166,9 @@ public class BackgroundTask
 					titleWithPermission.stay(Integer.parseInt(ti[3]));
 					titleWithPermission.fadeOut(Integer.parseInt(ti[4]));
 				}
-			}
+			}*/
 			AutoMessage am = new AutoMessage(path, rythmus, permission,
-					isRandom, RandomMessage, Message, title, titleWithPermission,
+					isRandom, RandomMessage, Message, //title, titleWithPermission,
 					consoleCommand, doPlayerCommandWithPermission, playerCommand,
 					date, time, timelist, interval, lasttimesend);
 			AutoMessageList.add(am);
@@ -181,66 +177,57 @@ public class BackgroundTask
 	
 	public void runTask()
 	{
-		task = plugin.getProxy().getScheduler().schedule(plugin, new Runnable()
-		{
-			
-			@Override
-			public void run()
+		plugin.getServer().getScheduler().buildTask(plugin, (task) ->
+		{			
+			LocalDateTime now = LocalDateTime.now();
+			if((now.getSecond() == 0 || now.getSecond() == 5 || now.getSecond() == 10 || now.getSecond() == 15
+					 || now.getSecond() == 20 || now.getSecond() == 25 || now.getSecond() == 30 || now.getSecond() == 35
+					 || now.getSecond() == 40 || now.getSecond() == 45 || now.getSecond() == 50 || now.getSecond() == 55)
+					&& (now.getMinute() == 0 || now.getMinute() == 5 || now.getMinute() == 10 || now.getMinute() == 15
+						|| now.getMinute() == 20 || now.getMinute() == 25 || now.getMinute() == 30 
+						|| now.getMinute() == 35 || now.getMinute() == 40 || now.getMinute() == 50
+						|| now.getMinute() == 55))
 			{
-				LocalDateTime now = LocalDateTime.now();
-				if((now.getSecond() == 0 || now.getSecond() == 5 || now.getSecond() == 10 || now.getSecond() == 15
-						 || now.getSecond() == 20 || now.getSecond() == 25 || now.getSecond() == 30 || now.getSecond() == 35
-						 || now.getSecond() == 40 || now.getSecond() == 45 || now.getSecond() == 50 || now.getSecond() == 55)
-						&& (now.getMinute() == 0 || now.getMinute() == 5 || now.getMinute() == 10 || now.getMinute() == 15
-							|| now.getMinute() == 20 || now.getMinute() == 25 || now.getMinute() == 30 
-							|| now.getMinute() == 35 || now.getMinute() == 40 || now.getMinute() == 50
-							|| now.getMinute() == 55))
-				{
-					autoSendMessage(now);
-					plugin.getProxy().getScheduler().cancel(task);
-				}
+				autoSendMessage(now);
+				task.cancel();
 			}
-		}, 5L, 1L, TimeUnit.SECONDS);
+		}).delay(1L, TimeUnit.SECONDS).repeat(5L, TimeUnit.SECONDS).schedule();
 	}
 	
 	public void autoSendMessage(LocalDateTime now)
 	{
-		AEX.logger.info("AutomaticExecute starts Scheduler at "+Utility.serialisedDateTime(now));
-		plugin.getProxy().getScheduler().schedule(plugin, new Runnable() 
+		plugin.getLogger().info("AutomaticExecute starts Scheduler at "+Utility.serialisedDateTime(now));
+		plugin.getServer().getScheduler().buildTask(plugin, (task) ->
 		{
 			
-			@Override
-			public void run() 
+			LocalTime lt = LocalTime.now();
+			int min = lt.getMinute();
+			int sec = lt.getSecond();
+			int hour = lt.getHour();
+			LocalDate ld = LocalDate.now();
+			int day = ld.getDayOfMonth();
+			int month = ld.getMonthValue();
+			int year = ld.getYear();
+			for(AutoMessage am : AutoMessageList)
 			{
-				LocalTime lt = LocalTime.now();
-				int min = lt.getMinute();
-				int sec = lt.getSecond();
-				int hour = lt.getHour();
-				LocalDate ld = LocalDate.now();
-				int day = ld.getDayOfMonth();
-				int month = ld.getMonthValue();
-				int year = ld.getYear();
-				for(AutoMessage am : AutoMessageList)
+				if(am.getRythmus() == Rythmus.ONCE)
 				{
-					if(am.getRythmus() == Rythmus.ONCE)
-					{
-						doONCE(am, day, month, year, hour, min, sec);
-					} else if(am.getRythmus() == Rythmus.ONCE_A_DAY)
-					{
-						doONCE_A_DAY(am, hour, min, sec);
-					} else if(am.getRythmus() == Rythmus.ON_TIMES)
-					{
-						doON_TIMES(am, hour, min, sec);
-					} else if(am.getRythmus() == Rythmus.MULTIPLE_ON_THE_DAY)
-					{
-						doMULTIPLE_ON_THE_DAY(am, day, month, year, hour, min, sec);
-					} else if(am.getRythmus() == Rythmus.INTERVAL)
-					{
-						doINTERVAL(am, day, month, year, hour, min, sec);
-					}
+					doONCE(am, day, month, year, hour, min, sec);
+				} else if(am.getRythmus() == Rythmus.ONCE_A_DAY)
+				{
+					doONCE_A_DAY(am, hour, min, sec);
+				} else if(am.getRythmus() == Rythmus.ON_TIMES)
+				{
+					doON_TIMES(am, hour, min, sec);
+				} else if(am.getRythmus() == Rythmus.MULTIPLE_ON_THE_DAY)
+				{
+					doMULTIPLE_ON_THE_DAY(am, day, month, year, hour, min, sec);
+				} else if(am.getRythmus() == Rythmus.INTERVAL)
+				{
+					doINTERVAL(am, day, month, year, hour, min, sec);
 				}
 			}
-		}, 0L, 1L, TimeUnit.SECONDS);	
+		}).delay(0L, TimeUnit.SECONDS).repeat(1L, TimeUnit.SECONDS).schedule();
 	}
 	
 	private void doONCE(AutoMessage am, int day, int month, int year, int hour, int min, int sec)
@@ -256,7 +243,7 @@ public class BackgroundTask
 				am.getTime().getMinute() == min &&
 				am.getTime().getSecond() == sec)
 		{
-			AEX.logger.info(am.getPathName()+": ONCE at "
+			plugin.getLogger().info(am.getPathName()+": ONCE at "
 					+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
@@ -278,7 +265,7 @@ public class BackgroundTask
 				am.getTime().getMinute() == min &&
 				am.getTime().getSecond() == sec)
 		{
-			AEX.logger.info(am.getPathName()+": ONCE_A_DAY at "
+			plugin.getLogger().info(am.getPathName()+": ONCE_A_DAY at "
 					+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
@@ -309,7 +296,7 @@ public class BackgroundTask
 		}
 		if(check == true)
 		{
-			AEX.logger.info(am.getPathName()+": ON_TIMES at "
+			plugin.getLogger().info(am.getPathName()+": ON_TIMES at "
 					+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
@@ -337,7 +324,7 @@ public class BackgroundTask
 				am.getDate().getDayOfMonth() == day &&
 				now >= am.getLastTimeSend())
 		{
-			AEX.logger.info(am.getPathName()+": MULTIPLE_ON_THE_DAY at "
+			plugin.getLogger().info(am.getPathName()+": MULTIPLE_ON_THE_DAY at "
 					+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
@@ -360,7 +347,7 @@ public class BackgroundTask
 		}
 		if(now >= am.getLastTimeSend())
 		{
-			AEX.logger.info(am.getPathName()+": INTERVAL at "
+			plugin.getLogger().info(am.getPathName()+": INTERVAL at "
 					+day+"."+month+"."+year+" "+hour+":"+min+":"+sec);
 			if(am.isRandom())
 			{
@@ -380,25 +367,25 @@ public class BackgroundTask
 		{
 			return;
 		}
-		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
+		for(Player all : plugin.getServer().getAllPlayers())
 		{
 			if(am.getPermission() != null)
 			{
 				if(all.hasPermission(am.getPermission()))
 				{
-					sendTitle(true, am, all);
-					for(TextComponent tc : am.getMessage())
+					//sendTitle(true, am, all);
+					for(String tc : am.getMessage())
 					{
-						all.sendMessage(tc);
+						all.sendMessage(ChatApi.tl(tc));
 					}
 					playerCommand(true, am, all);
 				}
 			} else
 			{
-				sendTitle(false, am, all);
-				for(TextComponent tc : am.getMessage())
+				//sendTitle(false, am, all);
+				for(String tc : am.getMessage())
 				{
-					all.sendMessage(tc);
+					all.sendMessage(ChatApi.tl(tc));
 				}
 				playerCommand(false, am, all);
 			}
@@ -415,27 +402,27 @@ public class BackgroundTask
 		int size = am.getRandomlist().size()-1;
 		Random r = new Random();
 		int value = r.nextInt(size);
-		for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers())
+		for(Player all : plugin.getServer().getAllPlayers())
 		{
 			if(am.getPermission() != null)
 			{
 				if(all.hasPermission(am.getPermission()))
 				{
-					sendTitle(true, am, all);
-					List<TextComponent> list = am.getRandomlist().get(value);
-					for(TextComponent tc : list)
+					//sendTitle(true, am, all);
+					List<String> list = am.getRandomlist().get(value);
+					for(String tc : list)
 					{
-						all.sendMessage(tc);											
+						all.sendMessage(ChatApi.tl(tc));											
 					}
 					playerCommand(true, am, all);
 				}
 			} else
 			{
-				sendTitle(false, am, all);
-				List<TextComponent> list = am.getRandomlist().get(value);
-				for(TextComponent tc : list)
+				//sendTitle(false, am, all);
+				List<String> list = am.getRandomlist().get(value);
+				for(String tc : list)
 				{
-					all.sendMessage(tc);											
+					all.sendMessage(ChatApi.tl(tc));											
 				}
 				playerCommand(false, am, all);
 			}
@@ -447,12 +434,12 @@ public class BackgroundTask
 	{
 		for(String cmd : am.getConsoleCommand())
 		{
-			AEX.getPlugin().getProxy().getPluginManager().dispatchCommand(plugin.getProxy().getConsole(), cmd);
+			AEX.getPlugin().getServer().getCommandManager().executeImmediatelyAsync(plugin.getServer().getConsoleCommandSource(), cmd);
 		}
 		return;
 	}
 	
-	private void playerCommand(boolean permission, AutoMessage am, ProxiedPlayer player)
+	private void playerCommand(boolean permission, AutoMessage am, Player player)
 	{
 		if(permission)
 		{
@@ -460,7 +447,7 @@ public class BackgroundTask
 			{
 				for(String cmd : am.getPlayerCommand())
 				{
-					AEX.getPlugin().getProxy().getPluginManager().dispatchCommand(player, cmd);
+					AEX.getPlugin().getServer().getCommandManager().executeImmediatelyAsync(player, cmd);
 				}
 			}
 		} else
@@ -469,13 +456,13 @@ public class BackgroundTask
 			{
 				for(String cmd : am.getPlayerCommand())
 				{
-					AEX.getPlugin().getProxy().getPluginManager().dispatchCommand(player, cmd);
+					AEX.getPlugin().getServer().getCommandManager().executeImmediatelyAsync(player, cmd);
 				}
 			}
 		}
 	}
 	
-	private void sendTitle(boolean permission, AutoMessage am, ProxiedPlayer player)
+	/*private void sendTitle(boolean permission, AutoMessage am, Player player)
 	{
 		if(permission)
 		{
@@ -490,5 +477,5 @@ public class BackgroundTask
 				player.sendTitle(am.getTitle());
 			}
 		}
-	}
+	}*/
 }

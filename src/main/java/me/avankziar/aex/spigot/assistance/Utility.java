@@ -6,11 +6,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import main.java.me.avankziar.aex.spigot.AutomaticExecute;
+import main.java.me.avankziar.aex.spigot.AEX;
 
 public class Utility
 {	
-	public Utility(AutomaticExecute plugin)
+	public Utility(AEX plugin)
 	{
 		loadUtility();
 	}

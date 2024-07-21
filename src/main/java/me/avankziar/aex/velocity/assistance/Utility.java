@@ -1,4 +1,4 @@
-package main.java.me.avankziar.aex.bungee.assistance;
+package main.java.me.avankziar.aex.velocity.assistance;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

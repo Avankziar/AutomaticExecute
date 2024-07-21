@@ -1,5 +1,5 @@
 name: AutomaticExecute
-main: main.java.me.avankziar.aex.bungee.AutomaticExecute
+main: main.java.me.avankziar.aex.bungee.AEX
 version: 3
 author: Avankziar
 softDepends: [InterfaceHub,RootAdministration]

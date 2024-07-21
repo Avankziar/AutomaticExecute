@@ -4,7 +4,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.me.avankziar.aex.bungee.AutomaticExecute;
+import dev.dejvokep.boostedyaml.YamlDocument;
+import main.java.me.avankziar.aex.bungee.AEX;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -12,7 +13,6 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
-import net.md_5.bungee.config.Configuration;
 
 @SuppressWarnings("deprecation")
 public class ChatApi
@@ -378,9 +378,9 @@ public class ChatApi
 	
 	public static TextComponent generateTextComponent(String message)
 	{
-		AutomaticExecute plugin = AutomaticExecute.getPlugin();
+		AEX plugin = AEX.getPlugin();
 		String[] array = message.split(" ");
-		Configuration cfg = plugin.getYamlHandler().getConfig();
+		YamlDocument cfg = plugin.getYamlHandler().getConfig();
 		String idclick = cfg.getString("Identifier.Click");
 		String idhover = cfg.getString("Identifier.Hover");
 		String sepb = cfg.getString("Seperator.BetweenFunction");

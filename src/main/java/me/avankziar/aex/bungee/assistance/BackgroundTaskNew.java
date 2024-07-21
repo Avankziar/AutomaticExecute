@@ -9,25 +9,24 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import main.java.me.avankziar.aex.bungee.AutomaticExecute;
-import main.java.me.avankziar.aex.bungee.database.YamlHandler;
+import dev.dejvokep.boostedyaml.YamlDocument;
+import main.java.me.avankziar.aex.bungee.AEX;
 import main.java.me.avankziar.aex.bungee.object.AutoMessage;
 import main.java.me.avankziar.aex.general.Rythmus;
-import net.md_5.bungee.BungeeCord;
+import main.java.me.avankziar.aex.general.database.YamlHandler;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.Title;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
-import net.md_5.bungee.config.Configuration;
 
 public class BackgroundTaskNew
 {
-	private AutomaticExecute plugin;
+	private AEX plugin;
 	private ScheduledTask task;
 	public static List<AutoMessage> AutoMessageList = new ArrayList<AutoMessage>();
 	
-	public BackgroundTaskNew(AutomaticExecute plugin)
+	public BackgroundTaskNew(AEX plugin)
 	{
 		this.plugin = plugin;
 		loadBackgroundTask();
@@ -47,11 +46,11 @@ public class BackgroundTaskNew
 			AutoMessageList.clear();
 		}
 		YamlHandler yh = plugin.getYamlHandler();
-		Configuration auto = yh.getAutoEx();
+		YamlDocument auto = yh.getAutoEx();
 		String sepb = yh.getConfig().getString("Seperator.BetweenFunction", "~");
-		for(String path : yh.getAutoEx().getKeys())
+		for(String path : yh.getAutoEx().getRoutesAsStrings(false))
 		{
-			AutomaticExecute.log.info("Loading Message: "+path);
+			AEX.logger.info("Loading Message: "+path);
 			if(auto.getString(path+".Rythmus") == null) continue;
 			Rythmus rythmus = Rythmus.valueOf(auto.getString(path+".Rythmus", "ONCE"));
 			String permission = null;
@@ -444,7 +443,7 @@ public class BackgroundTaskNew
 	{
 		for(String cmd : am.getConsoleCommand())
 		{
-			BungeeCord.getInstance().getPluginManager().dispatchCommand(plugin.getProxy().getConsole(), cmd);
+			AEX.getPlugin().getProxy().getPluginManager().dispatchCommand(plugin.getProxy().getConsole(), cmd);
 		}
 		return;
 	}
@@ -453,7 +452,7 @@ public class BackgroundTaskNew
 	{
 		for(String cmd : am.getConsoleCommand())
 		{
-			BungeeCord.getInstance().getPluginManager().dispatchCommand(plugin.getProxy().getConsole(), cmd.replace("%player%", player.getName()));
+			AEX.getPlugin().getProxy().getPluginManager().dispatchCommand(plugin.getProxy().getConsole(), cmd.replace("%player%", player.getName()));
 		}
 		return;
 	}
@@ -466,7 +465,7 @@ public class BackgroundTaskNew
 			{
 				for(String cmd : am.getPlayerCommand())
 				{
-					BungeeCord.getInstance().getPluginManager().dispatchCommand(player, cmd);
+					AEX.getPlugin().getProxy().getPluginManager().dispatchCommand(player, cmd);
 				}
 			}
 		} else
@@ -475,7 +474,7 @@ public class BackgroundTaskNew
 			{
 				for(String cmd : am.getPlayerCommand())
 				{
-					BungeeCord.getInstance().getPluginManager().dispatchCommand(player, cmd);
+					AEX.getPlugin().getProxy().getPluginManager().dispatchCommand(player, cmd);
 				}
 			}
 		}
@@ -502,7 +501,7 @@ public class BackgroundTaskNew
 	{
 		if(plugin.getYamlHandler().getConfig().getBoolean("DocumentExecuteInLog"))
 		{
-			AutomaticExecute.log.info(s);
+			AEX.logger.info(s);
 		}
 	}
 }

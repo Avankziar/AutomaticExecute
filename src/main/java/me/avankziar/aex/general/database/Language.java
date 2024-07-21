@@ -1,4 +1,4 @@
-package main.java.me.avankziar.aex.general;
+package main.java.me.avankziar.aex.general.database;
 
 import java.util.LinkedHashMap;
 

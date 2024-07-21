@@ -10,23 +10,23 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import dev.dejvokep.boostedyaml.YamlDocument;
 import main.java.me.avankziar.aex.general.Rythmus;
-import main.java.me.avankziar.aex.spigot.AutomaticExecute;
-import main.java.me.avankziar.aex.spigot.database.YamlHandler;
+import main.java.me.avankziar.aex.general.database.YamlHandler;
+import main.java.me.avankziar.aex.spigot.AEX;
 import main.java.me.avankziar.aex.spigot.object.AutoMessage;
 import main.java.me.avankziar.aex.spigot.object.Title;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class BackgroundTaskNew
 {
-	private AutomaticExecute plugin;
+	private AEX plugin;
 	public static List<AutoMessage> AutoMessageList = new ArrayList<AutoMessage>();
 	
-	public BackgroundTaskNew(AutomaticExecute plugin)
+	public BackgroundTaskNew(AEX plugin)
 	{
 		this.plugin = plugin;
 		loadBackgroundTask();
@@ -47,11 +47,11 @@ public class BackgroundTaskNew
 			AutoMessageList.clear();
 		}
 		YamlHandler yh = plugin.getYamlHandler();
-		YamlConfiguration auto = yh.getAutoEx();
+		YamlDocument auto = yh.getAutoEx();
 		String sepb = yh.getConfig().getString("Seperator.BetweenFunction", "~");
-		for(String path : auto.getKeys(false))
+		for(String path : auto.getRoutesAsStrings(false))
 		{
-			AutomaticExecute.log.info("Loading Message: "+path);
+			AEX.logger.info("Loading Message: "+path);
 			if(auto.getString(path+".Rythmus") == null) continue;
 			Rythmus rythmus = Rythmus.valueOf(auto.getString(path+".Rythmus", Rythmus.ONCE_ONLY.toString()));
 			String permission = null;
@@ -563,7 +563,7 @@ public class BackgroundTaskNew
 	{
 		if(plugin.getYamlHandler().getConfig().getBoolean("DocumentExecuteInLog"))
 		{
-			AutomaticExecute.log.info(s);
+			AEX.logger.info(s);
 		}
 	}
 }

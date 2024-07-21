@@ -8,21 +8,20 @@ import java.util.logging.Logger;
 import main.java.me.avankziar.aex.bungee.assistance.BackgroundTask;
 import main.java.me.avankziar.aex.bungee.assistance.ChatApi;
 import main.java.me.avankziar.aex.bungee.assistance.Utility;
-import main.java.me.avankziar.aex.bungee.database.YamlHandler;
-import main.java.me.avankziar.aex.general.YamlManager;
-import main.java.me.avankziar.ifh.bungee.InterfaceHub;
-import main.java.me.avankziar.ifh.bungee.administration.Administration;
-import main.java.me.avankziar.ifh.bungee.plugin.RegisteredServiceProvider;
-import net.md_5.bungee.BungeeCord;
+import main.java.me.avankziar.aex.general.database.YamlHandler;
+import main.java.me.avankziar.aex.general.database.YamlManager;
+import me.avankziar.ifh.bungee.IFH;
+import me.avankziar.ifh.bungee.administration.Administration;
+import me.avankziar.ifh.bungee.plugin.RegisteredServiceProvider;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
 
-public class AutomaticExecute extends Plugin
+public class AEX extends Plugin
 {
-	public static Logger log;
-	public static String pluginName = "AutomaticExecute";
-	private static AutomaticExecute plugin;
+	public static Logger logger;
+	public static String pluginname = "AutomaticExecute";
+	private static AEX plugin;
 	private static YamlHandler yamlHandler;
 	private static YamlManager yamlManager;
 	private static Utility utility;
@@ -37,18 +36,21 @@ public class AutomaticExecute extends Plugin
 	public void onEnable() 
 	{
 		plugin = this;
-		log = getLogger();
+		logger = getLogger();
 		//https://patorjk.com/software/taag/#p=display&f=ANSI%20Shadow&t=AEX
-		log.info("  █████╗ ███████╗██╗  ██╗ | API-Version: "+plugin.getDescription().getVersion());
-		log.info(" ██╔══██╗██╔════╝╚██╗██╔╝ | Author: "+plugin.getDescription().getAuthor());
-		log.info(" ███████║█████╗   ╚███╔╝  | Plugin Website: Comming soon");
-		log.info(" ██╔══██║██╔══╝   ██╔██╗  | Depend Plugins: "+plugin.getDescription().getDepends().toString());
-		log.info(" ██║  ██║███████╗██╔╝ ██╗ | SoftDepend Plugins: "+plugin.getDescription().getSoftDepends().toString());
-		log.info(" ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ | Have Fun^^");
+		logger.info("  █████╗ ███████╗██╗  ██╗ | API-Version: "+plugin.getDescription().getVersion());
+		logger.info(" ██╔══██╗██╔════╝╚██╗██╔╝ | Author: "+plugin.getDescription().getAuthor());
+		logger.info(" ███████║█████╗   ╚███╔╝  | Plugin Website: Comming soon");
+		logger.info(" ██╔══██║██╔══╝   ██╔██╗  | Depend Plugins: "+plugin.getDescription().getDepends().toString());
+		logger.info(" ██║  ██║███████╗██╔╝ ██╗ | SoftDepend Plugins: "+plugin.getDescription().getSoftDepends().toString());
+		logger.info(" ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ | Have Fun^^");
 		
 		setupIFHAdministration();
 		
-		yamlHandler = new YamlHandler(this);
+		yamlHandler = new YamlHandler(YamlManager.Type.BUNGEE, pluginname, logger, plugin.getDataFolder().toPath(),
+        		(plugin.getAdministration() == null ? null : plugin.getAdministration().getLanguage()));
+        setYamlManager(yamlHandler.getYamlManager());
+        
 		utility = new Utility(this);
 		backgroundTask = new BackgroundTask(this);
 		
@@ -60,10 +62,10 @@ public class AutomaticExecute extends Plugin
 	{
 		getProxy().getScheduler().cancel(this);
 		
-		log.info(pluginName + " is disabled!");
+		logger.info(pluginname + " is disabled!");
 	}
 	
-	public static AutomaticExecute getPlugin()
+	public static AEX getPlugin()
 	{
 		return plugin;
 	}
@@ -80,7 +82,7 @@ public class AutomaticExecute extends Plugin
 	
 	public void setYamlManager(YamlManager yamlManager)
 	{
-		AutomaticExecute.yamlManager = yamlManager;
+		AEX.yamlManager = yamlManager;
 	}
 	
 	public Utility getUtility()
@@ -100,7 +102,7 @@ public class AutomaticExecute extends Plugin
 	
 	public boolean reload()
 	{
-		if(!yamlHandler.loadYamlHandler())
+		if(!yamlHandler.loadYamlHandler(YamlManager.Type.BUNGEE))
 		{
 			return false;
 		}
@@ -114,7 +116,7 @@ public class AutomaticExecute extends Plugin
 	@SuppressWarnings("deprecation")
 	public void disablePlugin()
 	{
-		Plugin plugin = (Plugin) ProxyServer.getInstance().getPluginManager().getPlugin(pluginName);
+		Plugin plugin = (Plugin) ProxyServer.getInstance().getPluginManager().getPlugin(pluginname);
 	       
 		try
 		{
@@ -151,12 +153,12 @@ public class AutomaticExecute extends Plugin
 	
 	private void setupIFHAdministration()
 	{ 
-		Plugin plugin = BungeeCord.getInstance().getPluginManager().getPlugin("InterfaceHub");
+		Plugin plugin = getProxy().getPluginManager().getPlugin("InterfaceHub");
         if (plugin == null) 
         {
             return;
         }
-        InterfaceHub ifh = (InterfaceHub) plugin;
+        IFH ifh = (IFH) plugin;
         administrationRun = plugin.getProxy().getScheduler().schedule(plugin, new Runnable()
 		{
 			@Override
@@ -174,7 +176,7 @@ public class AutomaticExecute extends Plugin
 			        administrationConsumer = rsp.getProvider();
 			        if(administrationConsumer != null)
 			        {
-			    		log.info(pluginName + " detected InterfaceHub >>> Administration.class is consumed!");
+			    		logger.info(pluginname + " detected InterfaceHub >>> Administration.class is consumed!");
 			    		administrationRun.cancel();
 			        }
 				} catch(NoClassDefFoundError e)
