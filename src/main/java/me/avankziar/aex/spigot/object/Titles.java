@@ -1,6 +1,6 @@
 package main.java.me.avankziar.aex.spigot.object;
 
-public class Title
+public class Titles
 {
 	private String title;
 	private String subTitle;
@@ -8,7 +8,7 @@ public class Title
 	private int stay;
 	private int fadeOut;
 	
-	public Title(String title, String subTitle, int fadeIn, int stay, int fadeOut)
+	public Titles(String title, String subTitle, int fadeIn, int stay, int fadeOut)
 	{
 		setTitle(title);
 		setSubTitle(subTitle);

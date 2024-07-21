@@ -87,7 +87,7 @@ public class YamlHandler
 				return false;
 			}
 			f = "automaticexecute";
-			if(type == YamlManager.Type.BUNGEE || type == YamlManager.Type.SPIGOT)
+			if(type == YamlManager.Type.BUNGEE)
 			{
 				automatic = YamlDocument.create(new File(directory,"%f%.yml".replace("%f%", f)),
 						getClass().getResourceAsStream("/automaticexecute.yml"),gsd,lsd,dsd,usd);

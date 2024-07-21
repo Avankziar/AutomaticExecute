@@ -8,21 +8,20 @@ import java.util.List;
 import org.bukkit.Sound;
 
 import main.java.me.avankziar.aex.general.Rythmus;
-import net.md_5.bungee.api.chat.TextComponent;
 
 public class AutoMessage
 {
 	private String pathName;
 	private Rythmus rythmus;
 	private String permission;
-	private List<TextComponent> message;
+	private List<String> message;
 	private boolean doPlayerCommandWithPermission;
 	private List<String> consoleCommand;
 	private List<String> playerCommand;
 	private boolean random;
-	private List<List<TextComponent>> randomlist;
-	private Title title;
-	private Title titleWithPermission;
+	private List<List<String>> randomlist;
+	private Titles title;
+	private Titles titleWithPermission;
 	
 	private LocalDate date; //For Once and OnceADay
 	private LocalTime time; //For Once and OnceADay
@@ -34,8 +33,8 @@ public class AutoMessage
 	private ArrayList<Sound> soundsWithPermission;
 
 	public AutoMessage(String pathName, Rythmus rythmus, String permission, 
-			boolean random, List<List<TextComponent>> randomlist, List<TextComponent> message,
-			Title title, Title titleWithPermission, List<String> consoleCommand,
+			boolean random, List<List<String>> randomlist, List<String> message,
+			Titles title, Titles titleWithPermission, List<String> consoleCommand,
 			boolean doPlayerCommandWithPermission, List<String> playerCommand,
 			LocalDate date, LocalTime time, List<LocalTime> timeList, long interval, long lastTimeSend,
 			ArrayList<Sound> sounds, ArrayList<Sound> soundsWithPermission)
@@ -88,12 +87,12 @@ public class AutoMessage
 		this.permission = permission;
 	}
 
-	public List<TextComponent> getMessage()
+	public List<String> getMessage()
 	{
 		return message;
 	}
 
-	public void setMessage(List<TextComponent> message)
+	public void setMessage(List<String> message)
 	{
 		this.message = message;
 	}
@@ -138,12 +137,12 @@ public class AutoMessage
 		this.random = random;
 	}
 
-	public List<List<TextComponent>> getRandomlist()
+	public List<List<String>> getRandomlist()
 	{
 		return randomlist;
 	}
 
-	public void setRandomlist(List<List<TextComponent>> randomlist)
+	public void setRandomlist(List<List<String>> randomlist)
 	{
 		this.randomlist = randomlist;
 	}
@@ -198,22 +197,22 @@ public class AutoMessage
 		this.timeList = timeList;
 	}
 
-	public Title getTitle()
+	public Titles getTitle()
 	{
 		return title;
 	}
 
-	public void setTitle(Title title)
+	public void setTitle(Titles title)
 	{
 		this.title = title;
 	}
 
-	public Title getTitleWithPermission()
+	public Titles getTitleWithPermission()
 	{
 		return titleWithPermission;
 	}
 
-	public void setTitleWithPermission(Title titleWithPermission)
+	public void setTitleWithPermission(Titles titleWithPermission)
 	{
 		this.titleWithPermission = titleWithPermission;
 	}

@@ -18,12 +18,12 @@ import main.java.me.avankziar.aex.general.Rythmus;
 import main.java.me.avankziar.aex.general.database.YamlHandler;
 import main.java.me.avankziar.aex.spigot.AEX;
 import main.java.me.avankziar.aex.spigot.object.AutoMessage;
-import main.java.me.avankziar.aex.spigot.object.Title;
+import main.java.me.avankziar.aex.spigot.object.Titles;
 import net.md_5.bungee.api.chat.TextComponent;
 
 public class BackgroundTaskNew
 {
-	private AEX plugin;
+	/*private AEX plugin;
 	public static List<AutoMessage> AutoMessageList = new ArrayList<AutoMessage>();
 	
 	public BackgroundTaskNew(AEX plugin)
@@ -110,7 +110,7 @@ public class BackgroundTaskNew
 							List<TextComponent> rm = new ArrayList<TextComponent>();
 							for(String message : auto.getStringList(otherpath))
 							{
-								rm.add(ChatApi.generateTextComponent(message));
+								rm.add(ChatApiOld.generateTextComponent(message));
 							}
 							RandomMessage.add(rm);
 						}
@@ -120,7 +120,7 @@ public class BackgroundTaskNew
 			List<TextComponent> Message = new ArrayList<TextComponent>();
 			for(String message : auto.getStringList(path+".Message"))
 			{
-				Message.add(ChatApi.generateTextComponent(message));
+				Message.add(ChatApiOld.generateTextComponent(message));
 			}
 			List<String> consoleCommand = new ArrayList<String>();
 			boolean doPlayerCommandWithPermission = false;
@@ -153,8 +153,8 @@ public class BackgroundTaskNew
 				String[] ti = auto.getString(path+".TitleMessage").split(sepb);
 				if(ti.length == 5)
 				{
-					title = new Title(ChatApi.tl(ti[0]),
-							ChatApi.tl(ti[1]),
+					title = new Title(ChatApiOld.tl(ti[0]),
+							ChatApiOld.tl(ti[1]),
 							Integer.parseInt(ti[2]),
 							Integer.parseInt(ti[3]),
 							Integer.parseInt(ti[4]));
@@ -167,8 +167,8 @@ public class BackgroundTaskNew
 				if(ti.length == 5)
 				{
 					titleWithPermission = new Title(
-							ChatApi.tl(ti[0]),
-							ChatApi.tl(ti[1]),
+							ChatApiOld.tl(ti[0]),
+							ChatApiOld.tl(ti[1]),
 							Integer.parseInt(ti[2]),
 							Integer.parseInt(ti[3]),
 							Integer.parseInt(ti[4]));
@@ -565,5 +565,5 @@ public class BackgroundTaskNew
 		{
 			AEX.logger.info(s);
 		}
-	}
+	}*/
 }

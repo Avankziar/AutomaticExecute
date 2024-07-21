@@ -1,4 +1,5 @@
 package main.java.me.avankziar.aex.spigot.assistance;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -17,8 +18,8 @@ import main.java.me.avankziar.aex.general.Rythmus;
 import main.java.me.avankziar.aex.general.database.YamlHandler;
 import main.java.me.avankziar.aex.spigot.AEX;
 import main.java.me.avankziar.aex.spigot.object.AutoMessage;
-import main.java.me.avankziar.aex.spigot.object.Title;
-import net.md_5.bungee.api.chat.TextComponent;
+import main.java.me.avankziar.aex.spigot.object.Titles;
+import net.kyori.adventure.title.Title;
 
 public class BackgroundTask
 {
@@ -97,7 +98,7 @@ public class BackgroundTask
 			{
 				isRandom = auto.getBoolean(path+".IsRandom");
 			}
-			List<List<TextComponent>> RandomMessage = new ArrayList<List<TextComponent>>();
+			List<List<String>> RandomMessage = new ArrayList<List<String>>();
 			if(isRandom)
 			{
 				for(String otherpath : auto.getStringList(path+".RandomMessage"))
@@ -106,20 +107,20 @@ public class BackgroundTask
 					{
 						if(auto.getStringList(otherpath)!=null)
 						{
-							List<TextComponent> rm = new ArrayList<TextComponent>();
+							List<String> rm = new ArrayList<String>();
 							for(String message : auto.getStringList(otherpath))
 							{
-								rm.add(ChatApi.generateTextComponent(message));
+								rm.add(message);
 							}
 							RandomMessage.add(rm);
 						}
 					}
 				}
 			}
-			List<TextComponent> Message = new ArrayList<TextComponent>();
+			List<String> Message = new ArrayList<String>();
 			for(String message : auto.getStringList(path+".Message"))
 			{
-				Message.add(ChatApi.generateTextComponent(message));
+				Message.add(message);
 			}
 			List<String> consoleCommand = new ArrayList<String>();
 			boolean doPlayerCommandWithPermission = false;
@@ -146,28 +147,28 @@ public class BackgroundTask
 					playerCommand = auto.getStringList(path+".PlayerCommand");
 				}
 			}
-			Title title = null;
+			Titles title = null;
 			if(auto.get(path+".TitleMessage") != null)
 			{
 				String[] ti = auto.getString(path+".TitleMessage").split(sepb);
 				if(ti.length == 5)
 				{
-					title = new Title(ChatApi.tl(ti[0]),
-							ChatApi.tl(ti[1]),
+					title = new Titles(ti[0],
+							ti[1],
 							Integer.parseInt(ti[2]),
 							Integer.parseInt(ti[3]),
 							Integer.parseInt(ti[4]));
 				}
 			}
-			Title titleWithPermission = null;
+			Titles titleWithPermission = null;
 			if(auto.get(path+".TitleMessageWithPermission") != null)
 			{
 				String[] ti = auto.getString(path+".TitleMessageWithPermission").split(sepb);
 				if(ti.length == 5)
 				{
-					titleWithPermission = new Title(
-							ChatApi.tl(ti[0]),
-							ChatApi.tl(ti[1]),
+					titleWithPermission = new Titles(
+							ti[0],
+							ti[1],
 							Integer.parseInt(ti[2]),
 							Integer.parseInt(ti[3]),
 							Integer.parseInt(ti[4]));
@@ -415,9 +416,9 @@ public class BackgroundTask
 				playSound(true, am, all);
 				if(all.hasPermission(am.getPermission()))
 				{
-					for(TextComponent tc : am.getMessage())
+					for(String tc : am.getMessage())
 					{
-						all.spigot().sendMessage(tc);
+						all.sendMessage(ChatApi.tl(tc));
 					}
 					playerCommandWithPermission(am, all);
 				}
@@ -425,9 +426,9 @@ public class BackgroundTask
 			{
 				sendTitle(false, am, all);
 				playSound(false, am, all);
-				for(TextComponent tc : am.getMessage())
+				for(String tc : am.getMessage())
 				{
-					all.spigot().sendMessage(tc);
+					all.sendMessage(ChatApi.tl(tc));
 				}
 				playerCommand(am, all);
 			}
@@ -452,10 +453,10 @@ public class BackgroundTask
 				{
 					sendTitle(true, am, all);
 					playSound(true, am, all);
-					List<TextComponent> list = am.getRandomlist().get(value);
-					for(TextComponent tc : list)
+					List<String> list = am.getRandomlist().get(value);
+					for(String tc : list)
 					{
-						all.spigot().sendMessage(tc);											
+						all.sendMessage(ChatApi.tl(tc));											
 					}
 					playerCommandWithPermission(am, all);
 				}
@@ -463,10 +464,10 @@ public class BackgroundTask
 			{
 				sendTitle(false, am, all);
 				playSound(false, am, all);
-				List<TextComponent> list = am.getRandomlist().get(value);
-				for(TextComponent tc : list)
+				List<String> list = am.getRandomlist().get(value);
+				for(String tc : list)
 				{
-					all.spigot().sendMessage(tc);											
+					all.sendMessage(ChatApi.tl(tc));											
 				}
 				playerCommand(am, all);
 			}
@@ -537,25 +538,22 @@ public class BackgroundTask
 		{
 			if(am.getTitleWithPermission()!=null)
 			{
-				Title t = am.getTitleWithPermission();
-				player.sendTitle(
-						t.getTitle(),
-						t.getSubTitle(),
-						t.getFadeIn(),
-						t.getStay(),
-						t.getFadeOut());
+				Titles t = am.getTitleWithPermission();
+				Title.Times times = Title.Times.times(Duration.ofMillis(t.getFadeIn()*50L),
+						Duration.ofMillis(t.getStay()*50L), Duration.ofMillis(t.getFadeOut()*50L));
+				
+				player.showTitle(Title.title(ChatApi.tl(t.getTitle()), ChatApi.tl(t.getSubTitle()), times));
 			}
 		} else
 		{
 			if(am.getTitle() != null)
 			{
-				Title t = am.getTitle();
-				player.sendTitle(
-						t.getTitle(),
-						t.getSubTitle(),
-						t.getFadeIn(),
-						t.getStay(),
-						t.getFadeOut());
+				
+				Titles t = am.getTitle();
+				Title.Times times = Title.Times.times(Duration.ofMillis(t.getFadeIn()*50L),
+						Duration.ofMillis(t.getStay()*50L), Duration.ofMillis(t.getFadeOut()*50L));
+				
+				player.showTitle(Title.title(ChatApi.tl(t.getTitle()), ChatApi.tl(t.getSubTitle()), times));
 			}
 		}
 	}

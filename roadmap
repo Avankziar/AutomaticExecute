@@ -9,7 +9,8 @@ Future
 
 Build 3-6-0
 - Java 21 Dependency
-- Spigot 1.21 Support
+- Paper 1.21 Support
+- Spigot wird nicht mehr unterstützt.
 - Velocity Support
 - Es muss nun mit Minimessage gearbeitet werden.
 
