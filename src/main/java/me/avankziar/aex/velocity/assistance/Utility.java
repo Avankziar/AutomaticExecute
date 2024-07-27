@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import main.java.me.avankziar.aex.bungee.AEX;
+import main.java.me.avankziar.aex.velocity.AEX;
 
 public class Utility
 {

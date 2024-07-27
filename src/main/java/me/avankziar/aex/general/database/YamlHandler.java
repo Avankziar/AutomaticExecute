@@ -96,10 +96,10 @@ public class YamlHandler
 				automatic = YamlDocument.create(new File(directory,"%f%.yml".replace("%f%", f)),
 						getClass().getResourceAsStream("/automaticexecutenew.yml"),gsd,lsd,dsd,usd);
 			}			
-			if(!setupStaticFile(f, automatic, yamlManager.getCommandsKey()))
+			/*if(!setupStaticFile(f, automatic, yamlManager.getCommandsKey()))
 			{
 				return false;
-			}
+			}*/
 		} catch(Exception e)
 		{
 			logger.severe("Could not create/load %f%.yml file! Plugin will shut down!".replace("%f%", f));

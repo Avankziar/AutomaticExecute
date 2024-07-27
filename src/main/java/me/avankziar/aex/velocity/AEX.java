@@ -17,6 +17,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 
 import main.java.me.avankziar.aex.general.database.YamlHandler;
 import main.java.me.avankziar.aex.general.database.YamlManager;
+import main.java.me.avankziar.aex.velocity.assistance.BackgroundTask;
 import me.avankziar.ifh.velocity.IFH;
 import me.avankziar.ifh.velocity.administration.Administration;
 import me.avankziar.ifh.velocity.plugin.RegisteredServiceProvider;
@@ -36,7 +37,7 @@ public class AEX
     private final ProxyServer server;
     private Logger logger = null;
     private Path dataDirectory;
-	public static String pluginname = "AEX";
+	public static String pluginname = "AutomaticExecute";
 	private YamlHandler yamlHandler;
 	private YamlManager yamlManager;
 	private static Administration administrationConsumer;
@@ -71,6 +72,8 @@ public class AEX
 		yamlHandler = new YamlHandler(YamlManager.Type.VELO, pluginname, logger, dataDirectory,
         		(plugin.getAdministration() == null ? null : plugin.getAdministration().getLanguage()));
         setYamlManager(yamlHandler.getYamlManager());
+        
+        new BackgroundTask(plugin);
     }
     
     public static AEX getPlugin()

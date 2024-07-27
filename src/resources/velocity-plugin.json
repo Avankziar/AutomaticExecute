@@ -5,4 +5,4 @@
 "authors":["Avankziar"],
 "url":"https://www.spigotmc.org/resources/authors/avankziar.332028/",
 "dependencies":[{id='interfacehub', version='null', optional=false}],
-"main":"main.java.me.avankziar.aex.spigot.AEX"}
+"main":"main.java.me.avankziar.aex.velocity.AEX"}
