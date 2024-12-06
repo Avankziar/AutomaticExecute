@@ -1,4 +1,4 @@
-Blub
+
 Future
 - Nachrichten die möglichkeit bieten, diese nicht einzublenden. Dafür in der jeweiligen Config muss die Nachricht dafür extra einen true boolean
   bekommen. erst dann kann der spieler diese nachricht extern abschalten.
@@ -6,6 +6,10 @@ Future
 - Bungeecord Nachrichten pro Server unterscheiden lassen.
 - KettenBefehle Mechanik einbauen.
   Diese sollen in einer seperaten Config angelegt werden. Dort soll bestimmt werden, in welchem Context (Player oder Console) der Befehl ausgeführt werden soll.
+
+Build 3-6-1
+- Spigot Typo Plugin Ordner fix
+- Yaml Datei Kein AutoUpdate bei der automaticexecute.yml
 
 Build 3-6-0
 - Java 21 Dependency

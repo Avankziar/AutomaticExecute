@@ -51,8 +51,8 @@ public class BackgroundTask
 		String sepb = yh.getConfig().getString("Seperator.BetweenFunction", "~");
 		for(String path : yh.getAutoEx().getRoutesAsStrings(false))
 		{
-			AEX.logger.info("Loading Message: "+path);
 			if(auto.getString(path+".Rythmus") == null) continue;
+			AEX.logger.info("Loading Message: "+path);
 			Rythmus rythmus = Rythmus.valueOf(auto.getString(path+".Rythmus", "ONCE"));
 			String permission = null;
 			if(auto.getString(path+".Permission") != null) permission = auto.getString(path+".Permission");

@@ -18,7 +18,7 @@ public class AEX extends JavaPlugin
 {
 	public static AEX plugin;
 	public static Logger logger;
-	public static String pluginname = "AutomanticExecute";
+	public static String pluginname = "AutomaticExecute";
 	private static YamlHandler yamlHandler;
 	private static YamlManager yamlManager;
 	private static BackgroundTask backgroundTask;

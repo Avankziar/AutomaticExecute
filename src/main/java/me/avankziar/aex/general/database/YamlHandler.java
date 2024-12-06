@@ -90,11 +90,11 @@ public class YamlHandler
 			if(type == YamlManager.Type.BUNGEE)
 			{
 				automatic = YamlDocument.create(new File(directory,"%f%.yml".replace("%f%", f)),
-						getClass().getResourceAsStream("/automaticexecute.yml"),gsd,lsd,dsd,usd);
+						getClass().getResourceAsStream("/default.yml"),gsd,lsd,dsd,usd);//getClass().getResourceAsStream("/automaticexecute.yml"),gsd,lsdaex,dsd,usd);
 			} else
 			{
 				automatic = YamlDocument.create(new File(directory,"%f%.yml".replace("%f%", f)),
-						getClass().getResourceAsStream("/automaticexecutenew.yml"),gsd,lsd,dsd,usd);
+						getClass().getResourceAsStream("/default.yml"),gsd,lsd,dsd,usd);//getClass().getResourceAsStream("/automaticexecutenew.yml"),gsd,lsdaex,dsd,usd);
 			}			
 			/*if(!setupStaticFile(f, automatic, yamlManager.getCommandsKey()))
 			{

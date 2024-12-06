@@ -46,8 +46,8 @@ public class BackgroundTask
 		//String sepb = yh.getConfig().getString("Seperator.BetweenFunction", "~");
 		for(String path : yh.getAutoEx().getRoutesAsStrings(false))
 		{
-			plugin.getLogger().info("Loading Message: "+path);
 			if(auto.getString(path+".Rythmus") == null) continue;
+			plugin.getLogger().info("Loading Message: "+path);
 			Rythmus rythmus = Rythmus.valueOf(auto.getString(path+".Rythmus", "ONCE"));
 			String permission = null;
 			if(auto.getString(path+".Permission", null) != null) permission = auto.getString(path+".Permission");
